@@ -4,6 +4,10 @@ install vagrant and virtualbox
 
 create Vagrant file with below content it will create 2 VM's  one ansible master and one node
 ```
+vagrant plugin install vagrant-hostsupdater
+```
+
+```
 Vagrant.configure("2") do |config|
   config.vm.define "master" do |master|
     master.vm.box = "ubuntu/xenial64"
