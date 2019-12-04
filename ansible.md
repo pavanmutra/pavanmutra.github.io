@@ -18,3 +18,16 @@ Vagrant.configure("2") do |config|
  
 end
 ```
+
+check status using vagrant status 
+
+```
+vagrant status
+Current machine states:
+
+master                    running (virtualbox)
+slave                     running (virtualbox)
+
+This environment represents multiple VMs. The VMs are all listed
+above with their current state. For more information about a specific
+```
