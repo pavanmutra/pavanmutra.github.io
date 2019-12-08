@@ -105,7 +105,13 @@ become_user			-u
 become_ask_password	--ask-become-pass, -K
 ```
 ## Yaml 
-yet another markup language
+YAML(YAML Ain’t Markup Language) gives a even simpler way than JSON to represent the data. It removes curly brackets({}) and squard brackets([]) except for inline collections. In addition, vertical alignment is used to show the structure. Technically, YAML is a superset of JSON. In most cases, it is possible to convert YAML to JSON and JSON to YAML. YAML also has extra features, which are not in JSON.
+
+*Commenting: Adding additional information as a comment
+*Aliasing and Anchoring: Giving an alias to an item and referring it instead of typing/repeating many times
+*Merging: Merging aliased item into a current map
+
+```
 ---
 title:	my book
 
@@ -114,6 +120,10 @@ author:
 	last_name:	Doe
 
 publish_date:	2019-12-9
+
+```
+
+
 
 ## Ansible playboooks
 ```
