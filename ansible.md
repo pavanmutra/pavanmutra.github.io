@@ -111,19 +111,33 @@ YAML(YAML Ain’t Markup Language) gives a even simpler way than JSON to represe
 * Aliasing and Anchoring: Giving an alias to an item and referring it instead of typing/repeating many times
 * Merging: Merging aliased item into a current map
 
-```
+```yaml
 ---
-title:	my book
-
-author:
-	first_name: John
-	last_name:	Doe
-
-publish_date:	2019-12-9
+- foo
+- bar
+-
+  - baz
+  - qux
 
 ```
+or
+```yaml
 
+---
+- foo
+- bar : [baz, qux]
+```
 
+```json
+[
+  "foo",
+  "bar",
+  [
+    "baz",
+    "qux"
+  ]
+]
+```
 
 ## Ansible playboooks
 ```
