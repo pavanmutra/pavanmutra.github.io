@@ -80,9 +80,12 @@ check status using vagrant status
 vagrant status
 Current machine states:
 
-master                    running (virtualbox)
-slave                     running (virtualbox)
-
+database                  running (virtualbox)
+webserver-1               running (virtualbox)
+webserver-2               running (virtualbox)
+loadbalancer              running (virtualbox)
+queue                     running (virtualbox)
+control                   running (virtualbox)
 This environment represents multiple VMs. The VMs are all listed
 above with their current state. For more information about a specific
 ```
