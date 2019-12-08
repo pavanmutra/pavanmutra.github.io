@@ -89,3 +89,7 @@ control                   running (virtualbox)
 This environment represents multiple VMs. The VMs are all listed
 above with their current state. For more information about a specific
 ```
+
+##Ansible Adhoc commands
+
+ansible host-pattern -m module [-a 'module arguments'] [-i inventory]
