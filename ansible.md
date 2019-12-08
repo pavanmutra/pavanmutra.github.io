@@ -94,3 +94,14 @@ above with their current state. For more information about a specific
 ```
 ansible host-pattern -m module [-a 'module arguments'] [-i inventory]
 ```
+## Ansible commanline options
+
+```
+inventory 			-i
+remote_user			-u
+become 				--become, -b
+become_method		--become-method
+become_user			-u
+become_ask_password	--ask-become-pass, -K
+```
+
