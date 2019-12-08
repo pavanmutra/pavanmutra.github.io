@@ -90,7 +90,7 @@ This environment represents multiple VMs. The VMs are all listed
 above with their current state. For more information about a specific
 ```
 
-##Ansible Adhoc commands
+## Ansible Adhoc commands
 ```
 ansible host-pattern -m module [-a 'module arguments'] [-i inventory]
 ```
@@ -103,5 +103,20 @@ become 				--become, -b
 become_method		--become-method
 become_user			-u
 become_ask_password	--ask-become-pass, -K
+```
+## Yaml 
+yet another markup language
+---
+title:	my book
+
+author:
+	first_name: John
+	last_name:	Doe
+
+publish_date:	2019-12-9
+
+## Ansible playboooks
+```
+
 ```
 
