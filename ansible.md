@@ -140,7 +140,26 @@ or
 ```
 
 ## Ansible playboooks
+
+### Ansible modules 
+
+modules are ready to use tools designed to do specific operations
+
+when we run modules are copied to managed hosts and executed there
+
+to get list of modules 
+```
+ansible-doc -l
+```
+to get sample snippets
+```
+ansible-doc -s yum
 ```
 
-```
 
+```
+```
+```
+```
+```
+```
