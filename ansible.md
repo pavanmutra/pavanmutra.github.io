@@ -76,7 +76,7 @@ end
 
 check status using vagrant status 
 
-```
+```shell
 vagrant status
 Current machine states:
 
@@ -91,7 +91,7 @@ above with their current state. For more information about a specific
 ```
 
 ## Ansible Adhoc commands
-```
+```shell
 ansible host-pattern -m module [-a 'module arguments'] [-i inventory]
 ```
 ## Ansible commanline options
@@ -148,11 +148,11 @@ modules are ready to use tools designed to do specific operations
 when we run modules are copied to managed hosts and executed there
 
 to get list of modules 
-```
+```shell
 ansible-doc -l
 ```
 to get sample snippets
-```
+```shellß
 ansible-doc -s yum
 ```
 sample for adding ansible user in all hosts
