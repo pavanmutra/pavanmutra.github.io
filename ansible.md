@@ -7,7 +7,7 @@ create Vagrant file with below content it will create 2 VM's  one ansible master
 vagrant plugin install vagrant-hostsupdater
 ```
 
-```
+```go
 Vagrant.configure("2") do |config|
   servers=[
     {
