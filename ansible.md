@@ -2,7 +2,7 @@
 ### prerequesites
 install vagrant and virtualbox
 
-create Vagrant file with below content it will create 2 VM's  one ansible master and one node
+create Vagrant file with below content it will create 6 VM's  your local machine will me ansible master
 ```
 vagrant plugin install vagrant-hostsupdater
 ```
