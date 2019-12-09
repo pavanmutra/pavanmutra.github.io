@@ -155,9 +155,18 @@ to get sample snippets
 ```
 ansible-doc -s yum
 ```
+sample for adding ansible user in all hosts
 
-
-```
+```yaml
+- name: add ansible user
+  hosts: all
+  become: true
+  become_method: sudo
+  become_user: root
+  tasks:
+    - user:
+        groups: ansible
+        name: ansible
 ```
 ```
 ```
