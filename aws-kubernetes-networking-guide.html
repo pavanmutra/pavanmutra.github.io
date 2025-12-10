@@ -1,0 +1,1367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWS & Kubernetes Networking Guide</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 40px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+        h1 {
+            color: #232f3e;
+            border-bottom: 3px solid #ff9900;
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+        h2 {
+            color: #232f3e;
+            border-bottom: 2px solid #e6e6e6;
+            padding-bottom: 8px;
+            margin-top: 40px;
+        }
+        h3 {
+            color: #545b64;
+            margin-top: 30px;
+        }
+        h4 {
+            color: #545b64;
+            margin-top: 20px;
+        }
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #d63384;
+        }
+        pre {
+            background-color: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            border-left: 4px solid #ff9900;
+        }
+        pre code {
+            background-color: transparent;
+            color: inherit;
+            padding: 0;
+        }
+        blockquote {
+            border-left: 4px solid #ff9900;
+            margin-left: 0;
+            padding-left: 20px;
+            color: #666;
+            font-style: italic;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #232f3e;
+            color: white;
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        ul, ol {
+            margin: 15px 0;
+            padding-left: 30px;
+        }
+        li {
+            margin: 8px 0;
+        }
+        a {
+            color: #0073bb;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        hr {
+            border: none;
+            border-top: 2px solid #e6e6e6;
+            margin: 30px 0;
+        }
+        .toc {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .toc ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .toc li {
+            margin: 5px 0;
+        }
+        strong {
+            color: #232f3e;
+            font-weight: 600;
+        }
+        @media print {
+            body {
+                background-color: white;
+            }
+            .container {
+                box-shadow: none;
+            }
+            @page {
+                margin: 2cm;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 id="aws-kubernetes-networking-complete-guide-for-devops-engineers">AWS &amp; Kubernetes Networking: Complete Guide for DevOps Engineers</h1>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol>
+<li><a href="#aws-networking-fundamentals">AWS Networking Fundamentals</a></li>
+<li><a href="#kubernetes-networking-basics">Kubernetes Networking Basics</a></li>
+<li><a href="#aws-eks-integration">AWS EKS Integration</a></li>
+<li><a href="#end-to-end-traffic-flow-scenarios">End-to-End Traffic Flow Scenarios</a></li>
+<li><a href="#common-interview-scenarios">Common Interview Scenarios</a></li>
+<li><a href="#troubleshooting-guide">Troubleshooting Guide</a></li>
+</ol>
+<hr />
+<h2 id="aws-networking-fundamentals">AWS Networking Fundamentals</h2>
+<h3 id="1-vpc-virtual-private-cloud">1. VPC (Virtual Private Cloud)</h3>
+<p><strong>What is it?</strong>
+Think of a VPC as your own private section of AWS cloud. It's like renting a piece of land where you can build your own network infrastructure.</p>
+<p><strong>Key Concepts:</strong>
+- <strong>CIDR Block</strong>: Defines the IP address range (e.g., 10.0.0.0/16 means 65,536 IP addresses from 10.0.0.0 to 10.0.255.255)
+- <strong>Region-specific</strong>: Each VPC exists in one AWS region
+- <strong>Isolated by default</strong>: Resources in one VPC cannot communicate with another VPC unless explicitly configured</p>
+<p><strong>Example:</strong></p>
+<pre class="codehilite"><code>VPC: 10.0.0.0/16
+- This gives you all IPs from 10.0.0.0 to 10.0.255.255
+- /16 means first 16 bits are fixed (10.0), last 16 bits are variable
+</code></pre>
+
+<h3 id="2-subnets">2. Subnets</h3>
+<p><strong>What is it?</strong>
+Subnets are smaller networks within your VPC. Think of them as rooms in your house (VPC).</p>
+<p><strong>Types:</strong>
+- <strong>Public Subnet</strong>: Has a route to the Internet Gateway (IGW). Resources here can directly access the internet.
+- <strong>Private Subnet</strong>: No direct internet access. Resources here are more secure.</p>
+<p><strong>Key Points:</strong>
+- Subnets are Availability Zone (AZ) specific
+- Each subnet has its own CIDR block (subset of VPC CIDR)
+- Route table determines if subnet is public or private</p>
+<p><strong>Example Setup:</strong></p>
+<pre class="codehilite"><code>VPC: 10.0.0.0/16
+
+Public Subnets:
+- 10.0.1.0/24 (us-east-1a) - 256 IPs
+- 10.0.2.0/24 (us-east-1b) - 256 IPs
+
+Private Subnets:
+- 10.0.10.0/24 (us-east-1a) - 256 IPs
+- 10.0.11.0/24 (us-east-1b) - 256 IPs
+</code></pre>
+
+<h3 id="3-internet-gateway-igw">3. Internet Gateway (IGW)</h3>
+<p><strong>What is it?</strong>
+The door that connects your VPC to the internet. It's a one-to-one mapping with your VPC.</p>
+<p><strong>How it works:</strong>
+- Attached to VPC
+- Provides public IP addresses (via Elastic IPs)
+- Enables bidirectional internet access
+- Only one IGW per VPC</p>
+<p><strong>Traffic Flow:</strong></p>
+<pre class="codehilite"><code>Internet → IGW → Public Subnet → Your Resource
+Your Resource → Public Subnet → IGW → Internet
+</code></pre>
+
+<h3 id="4-nat-gateway-nat-instance">4. NAT Gateway / NAT Instance</h3>
+<p><strong>What is it?</strong>
+Allows resources in private subnets to access the internet (outbound only) while keeping them hidden from the internet.</p>
+<p><strong>Key Differences:</strong>
+- <strong>NAT Gateway</strong>: Managed by AWS, highly available, scales automatically
+- <strong>NAT Instance</strong>: EC2 instance you manage, more control but more work</p>
+<p><strong>Why use it?</strong>
+- Private subnets need to download updates, access APIs, etc.
+- But you don't want them directly accessible from the internet</p>
+<p><strong>Traffic Flow:</strong></p>
+<pre class="codehilite"><code>Private Subnet Resource → NAT Gateway → IGW → Internet
+Internet → (Cannot reach private subnet directly)
+</code></pre>
+
+<h3 id="5-route-tables">5. Route Tables</h3>
+<p><strong>What is it?</strong>
+Like a GPS system for your network. Tells traffic where to go.</p>
+<p><strong>Key Rules:</strong>
+- Each subnet must have a route table (explicit or default)
+- Routes are evaluated in order (most specific first)
+- Default route: 0.0.0.0/0 means "everything else"</p>
+<p><strong>Public Subnet Route Table:</strong></p>
+<pre class="codehilite"><code>Destination        Target
+10.0.0.0/16        local (VPC internal)
+0.0.0.0/0          igw-xxxxx (Internet Gateway)
+</code></pre>
+
+<p><strong>Private Subnet Route Table:</strong></p>
+<pre class="codehilite"><code>Destination        Target
+10.0.0.0/16        local (VPC internal)
+0.0.0.0/0          nat-xxxxx (NAT Gateway)
+</code></pre>
+
+<h3 id="6-security-groups">6. Security Groups</h3>
+<p><strong>What is it?</strong>
+A virtual firewall that controls inbound and outbound traffic at the instance/ENI level.</p>
+<p><strong>Key Characteristics:</strong>
+- <strong>Stateful</strong>: If you allow inbound, outbound is automatically allowed
+- <strong>Default deny</strong>: Everything is blocked unless explicitly allowed
+- <strong>Can attach multiple</strong>: One resource can have multiple security groups
+- <strong>Region-specific</strong>: Security groups are tied to a region</p>
+<p><strong>Example:</strong></p>
+<pre class="codehilite"><code>Security Group: web-servers
+Inbound Rules:
+- Port 80 (HTTP) from 0.0.0.0/0 (anywhere)
+- Port 443 (HTTPS) from 0.0.0.0/0
+- Port 22 (SSH) from 10.0.0.0/16 (only from VPC)
+
+Outbound Rules:
+- All traffic to 0.0.0.0/0 (default)
+</code></pre>
+
+<h3 id="7-network-acls-nacls">7. Network ACLs (NACLs)</h3>
+<p><strong>What is it?</strong>
+Another layer of security at the subnet level (not instance level).</p>
+<p><strong>Key Differences from Security Groups:</strong>
+- <strong>Stateless</strong>: Must allow both inbound and outbound
+- <strong>Subnet-level</strong>: Applies to entire subnet
+- <strong>Order matters</strong>: Rules are evaluated in order (lowest number first)
+- <strong>Default allow</strong>: Everything is allowed unless explicitly denied</p>
+<p><strong>Example:</strong></p>
+<pre class="codehilite"><code>NACL Rules (evaluated in order):
+Rule #100: Allow inbound HTTP (80) from 0.0.0.0/0
+Rule #200: Allow inbound HTTPS (443) from 0.0.0.0/0
+Rule #300: Deny all inbound
+</code></pre>
+
+<h3 id="8-vpc-peering">8. VPC Peering</h3>
+<p><strong>What is it?</strong>
+Direct connection between two VPCs, allowing them to communicate as if they're on the same network.</p>
+<p><strong>Key Points:</strong>
+- <strong>Non-transitive</strong>: If VPC A peers with B, and B peers with C, A cannot talk to C
+- <strong>Same or different accounts/regions</strong>: Can peer across accounts and regions
+- <strong>CIDR blocks must not overlap</strong>: VPCs cannot have overlapping IP ranges</p>
+<p><strong>Use Case:</strong></p>
+<pre class="codehilite"><code>Production VPC (10.0.0.0/16) ←→ Peering Connection ←→ Development VPC (10.1.0.0/16)
+</code></pre>
+
+<h3 id="9-vpc-endpoints">9. VPC Endpoints</h3>
+<p><strong>What is it?</strong>
+Private connection to AWS services without going through the internet.</p>
+<p><strong>Types:</strong>
+- <strong>Gateway Endpoint</strong>: For S3 and DynamoDB (free, uses route table)
+- <strong>Interface Endpoint</strong>: For other services (costs money, uses ENI)</p>
+<p><strong>Why use it?</strong>
+- Security: Traffic never leaves AWS network
+- Cost: No data transfer charges
+- Performance: Lower latency</p>
+<p><strong>Example:</strong></p>
+<pre class="codehilite"><code>EC2 in Private Subnet → VPC Endpoint → S3 (no internet, no NAT needed)
+</code></pre>
+
+<h3 id="10-load-balancers">10. Load Balancers</h3>
+<p><strong>Application Load Balancer (ALB):</strong>
+- <strong>Layer 7</strong> (HTTP/HTTPS)
+- Content-based routing (path, host, headers)
+- SSL termination
+- Health checks
+- Target groups (EC2, IPs, Lambda)</p>
+<p><strong>Network Load Balancer (NLB):</strong>
+- <strong>Layer 4</strong> (TCP/UDP)
+- Ultra-low latency
+- Static IP addresses
+- Preserves source IP
+- Best for high performance</p>
+<p><strong>Classic Load Balancer (CLB):</strong>
+- Legacy (avoid for new deployments)
+- Layer 4 and Layer 7</p>
+<p><strong>Traffic Flow:</strong></p>
+<pre class="codehilite"><code>Internet → ALB/NLB → Target Group → EC2 Instances
+</code></pre>
+
+<hr />
+<h2 id="kubernetes-networking-basics">Kubernetes Networking Basics</h2>
+<h3 id="1-pod-networking">1. Pod Networking</h3>
+<p><strong>What is a Pod?</strong>
+A pod is the smallest deployable unit in Kubernetes. It's like a container wrapper that can contain one or more containers.</p>
+<p><strong>Pod IP Address:</strong>
+- Each pod gets its own IP address
+- Pods can communicate directly using these IPs
+- IPs are assigned by the Container Network Interface (CNI)</p>
+<p><strong>Key Principle:</strong></p>
+<blockquote>
+<p><strong>"Every pod should be able to communicate with every other pod without NAT"</strong></p>
+</blockquote>
+<p><strong>Example:</strong></p>
+<pre class="codehilite"><code>Pod A: 10.244.1.5
+Pod B: 10.244.2.10
+Pod A can directly ping Pod B using 10.244.2.10
+</code></pre>
+
+<h3 id="2-container-network-interface-cni">2. Container Network Interface (CNI)</h3>
+<p><strong>What is it?</strong>
+A plugin that Kubernetes uses to configure networking for pods.</p>
+<p><strong>Popular CNI Plugins:</strong>
+- <strong>AWS VPC CNI</strong>: Uses AWS VPC IP addresses directly (EKS default)
+- <strong>Calico</strong>: Policy-based networking
+- <strong>Flannel</strong>: Simple overlay network
+- <strong>Cilium</strong>: eBPF-based networking</p>
+<p><strong>How it works:</strong>
+1. Pod is created
+2. CNI plugin assigns IP address
+3. CNI sets up routes and network interfaces
+4. Pod can now communicate</p>
+<h3 id="3-services">3. Services</h3>
+<p><strong>What is it?</strong>
+A stable network endpoint to access pods. Pods come and go, but services provide a consistent way to reach them.</p>
+<p><strong>Types of Services:</strong></p>
+<h4 id="clusterip-default">ClusterIP (Default)</h4>
+<ul>
+<li><strong>Internal only</strong>: Only accessible within the cluster</li>
+<li><strong>Virtual IP</strong>: Gets a virtual IP in the service CIDR range</li>
+<li><strong>Load balancing</strong>: Distributes traffic to pod endpoints</li>
+</ul>
+<p><strong>Example:</strong></p>
+<pre class="codehilite"><code>Service: my-app (ClusterIP: 10.100.0.5)
+  ↓
+Pods: 10.244.1.5, 10.244.2.10, 10.244.3.15
+</code></pre>
+
+<h4 id="nodeport">NodePort</h4>
+<ul>
+<li><strong>External access</strong>: Exposes service on each node's IP at a specific port (30000-32767)</li>
+<li><strong>Access pattern</strong>: <code>&lt;NodeIP&gt;:&lt;NodePort&gt;</code></li>
+</ul>
+<p><strong>Example:</strong></p>
+<pre class="codehilite"><code>Node 1 (IP: 192.168.1.10): Port 30080 → Service → Pods
+Node 2 (IP: 192.168.1.11): Port 30080 → Service → Pods
+</code></pre>
+
+<h4 id="loadbalancer">LoadBalancer</h4>
+<ul>
+<li><strong>Cloud integration</strong>: Creates a cloud load balancer (ALB/NLB in AWS)</li>
+<li><strong>External IP</strong>: Gets a public IP address</li>
+<li><strong>Most common in production</strong></li>
+</ul>
+<p><strong>Example:</strong></p>
+<pre class="codehilite"><code>Internet → AWS Load Balancer → Service → Pods
+</code></pre>
+
+<h4 id="externalname">ExternalName</h4>
+<ul>
+<li><strong>DNS alias</strong>: Maps service to external DNS name</li>
+<li><strong>No proxying</strong>: Just DNS resolution</li>
+</ul>
+<h3 id="4-service-discovery">4. Service Discovery</h3>
+<p><strong>How pods find services:</strong>
+- <strong>DNS</strong>: Kubernetes has a built-in DNS server (CoreDNS)
+- <strong>Service name</strong>: <code>&lt;service-name&gt;.&lt;namespace&gt;.svc.cluster.local</code>
+- <strong>Short form</strong>: Just <code>&lt;service-name&gt;</code> in the same namespace</p>
+<p><strong>Example:</strong></p>
+<pre class="codehilite"><code>Pod in namespace &quot;default&quot; wants to reach &quot;my-app&quot; service:
+- Full: my-app.default.svc.cluster.local
+- Short: my-app (if in same namespace)
+</code></pre>
+
+<h3 id="5-ingress">5. Ingress</h3>
+<p><strong>What is it?</strong>
+An API object that manages external HTTP/HTTPS access to services. Think of it as a smart router.</p>
+<p><strong>How it works:</strong>
+- <strong>Ingress Controller</strong>: The actual implementation (like nginx, ALB, etc.)
+- <strong>Ingress Resource</strong>: The configuration (rules, paths, hosts)</p>
+<p><strong>Example:</strong></p>
+<pre class="codehilite"><code>Internet → Ingress Controller → Ingress Rules → Services → Pods
+
+Ingress Rule:
+- Host: example.com
+- Path: /api → service: api-service
+- Path: /web → service: web-service
+</code></pre>
+
+<p><strong>AWS ALB Ingress Controller:</strong>
+- Creates AWS ALB automatically
+- Handles SSL certificates
+- Integrates with AWS Certificate Manager (ACM)</p>
+<h3 id="6-network-policies">6. Network Policies</h3>
+<p><strong>What is it?</strong>
+Firewall rules for pods. Controls which pods can talk to which pods.</p>
+<p><strong>Key Concepts:</strong>
+- <strong>Default allow</strong>: Without policies, all pods can communicate
+- <strong>Once applied</strong>: Only explicitly allowed traffic is permitted
+- <strong>Namespace-scoped</strong>: Policies apply within a namespace</p>
+<p><strong>Example:</strong></p>
+<pre class="codehilite"><code>NetworkPolicy: Allow frontend to backend
+- Pods with label &quot;app=frontend&quot; can connect to
+- Pods with label &quot;app=backend&quot; on port 8080
+</code></pre>
+
+<h3 id="7-dns-in-kubernetes">7. DNS in Kubernetes</h3>
+<p><strong>CoreDNS:</strong>
+- Default DNS server in Kubernetes
+- Resolves service names to IPs
+- Handles pod DNS queries</p>
+<p><strong>DNS Records:</strong>
+- <strong>Service A record</strong>: <code>&lt;service&gt;.&lt;namespace&gt;.svc.cluster.local</code> → Service IP
+- <strong>Pod A record</strong>: <code>&lt;pod-ip&gt;.&lt;namespace&gt;.pod.cluster.local</code> → Pod IP</p>
+<hr />
+<h2 id="aws-eks-integration">AWS EKS Integration</h2>
+<h3 id="1-eks-architecture-overview">1. EKS Architecture Overview</h3>
+<p><strong>What is EKS?</strong>
+Amazon Elastic Kubernetes Service - managed Kubernetes on AWS.</p>
+<p><strong>Components:</strong></p>
+<pre class="codehilite"><code>EKS Control Plane (Managed by AWS)
+  ↓
+Worker Nodes (EC2 instances or Fargate)
+  ↓
+Pods running your applications
+</code></pre>
+
+<h3 id="2-vpc-cni-plugin-aws">2. VPC CNI Plugin (AWS)</h3>
+<p><strong>How it works:</strong>
+- Pods get <strong>real VPC IP addresses</strong> (not overlay network)
+- Each pod gets an ENI (Elastic Network Interface) or uses secondary IPs
+- No NAT between pods and VPC resources</p>
+<p><strong>Benefits:</strong>
+- Direct VPC integration
+- Can use VPC security groups on pods
+- No performance overhead of overlay networks</p>
+<p><strong>Limitations:</strong>
+- Limited by ENI/IP limits per instance
+- Must plan IP address allocation carefully</p>
+<h3 id="3-eks-networking-components">3. EKS Networking Components</h3>
+<h4 id="control-plane-networking">Control Plane Networking</h4>
+<ul>
+<li><strong>API Server</strong>: Accessible via public or private endpoint</li>
+<li><strong>Private endpoint</strong>: Only accessible from VPC</li>
+<li><strong>Public endpoint</strong>: Accessible from internet (with authentication)</li>
+</ul>
+<h4 id="worker-node-networking">Worker Node Networking</h4>
+<ul>
+<li>Nodes in <strong>private subnets</strong> (best practice)</li>
+<li>Nodes need access to:</li>
+<li>EKS API endpoint</li>
+<li>Container registry (ECR)</li>
+<li>Internet (via NAT) for pulling images</li>
+</ul>
+<h4 id="pod-networking">Pod Networking</h4>
+<ul>
+<li>Pods get IPs from VPC subnet CIDR</li>
+<li>Can communicate with:</li>
+<li>Other pods (same or different nodes)</li>
+<li>VPC resources (RDS, ElastiCache, etc.)</li>
+<li>Internet (if node has NAT access)</li>
+</ul>
+<h3 id="4-load-balancer-integration">4. Load Balancer Integration</h3>
+<h4 id="alb-ingress-controller">ALB Ingress Controller</h4>
+<p><strong>How it works:</strong>
+1. You create an Ingress resource
+2. ALB Ingress Controller watches for Ingress resources
+3. Creates AWS ALB automatically
+4. Configures target groups pointing to nodes
+5. Updates ALB as pods change</p>
+<p><strong>Traffic Flow:</strong></p>
+<pre class="codehilite"><code>Internet → ALB → Target Group → NodePort → Service → Pod
+</code></pre>
+
+<h4 id="nlb-for-services">NLB for Services</h4>
+<p><strong>Type: LoadBalancer with NLB:</strong></p>
+<pre class="codehilite"><code class="language-yaml">apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: &quot;nlb&quot;
+spec:
+  type: LoadBalancer
+</code></pre>
+
+<p><strong>Traffic Flow:</strong></p>
+<pre class="codehilite"><code>Internet → NLB → Node IP:NodePort → Service → Pod
+</code></pre>
+
+<h3 id="5-security-groups-in-eks">5. Security Groups in EKS</h3>
+<p><strong>Node Security Group:</strong>
+- Applied to worker nodes
+- Allows traffic from ALB/NLB
+- Allows inter-node communication
+- Allows access to EKS API</p>
+<p><strong>Pod Security Groups (VPC CNI):</strong>
+- Can assign security groups directly to pods
+- More granular control
+- Requires VPC CNI with security group support</p>
+<h3 id="6-eks-networking-best-practices">6. EKS Networking Best Practices</h3>
+<ol>
+<li><strong>Use private subnets for nodes</strong>: More secure</li>
+<li><strong>Use NAT Gateway</strong>: For outbound internet access</li>
+<li><strong>Plan IP addresses</strong>: VPC CNI uses real VPC IPs</li>
+<li><strong>Use ALB Ingress Controller</strong>: For HTTP/HTTPS traffic</li>
+<li><strong>Use NLB</strong>: For TCP/UDP or high-performance needs</li>
+<li><strong>Enable VPC Flow Logs</strong>: For network monitoring</li>
+<li><strong>Use Network Policies</strong>: For pod-to-pod security</li>
+</ol>
+<hr />
+<h2 id="end-to-end-traffic-flow-scenarios">End-to-End Traffic Flow Scenarios</h2>
+<h3 id="scenario-1-internet-to-kubernetes-pod-httphttps">Scenario 1: Internet to Kubernetes Pod (HTTP/HTTPS)</h3>
+<p><strong>Setup:</strong>
+- EKS cluster with ALB Ingress Controller
+- Application pods in private subnets
+- Ingress resource configured</p>
+<p><strong>Traffic Flow:</strong></p>
+<pre class="codehilite"><code>1. User → Internet
+   User types: https://myapp.example.com
+
+2. Internet → Route 53 (DNS)
+   DNS resolves to ALB IP address
+
+3. Route 53 → ALB
+   ALB receives HTTPS request on port 443
+
+4. ALB → SSL Termination
+   ALB terminates SSL using ACM certificate
+
+5. ALB → Target Group
+   ALB forwards HTTP request to target group
+   Target group contains: Node IPs on NodePort (e.g., 30080)
+
+6. Target Group → Worker Node
+   Traffic hits node's NodePort (e.g., 192.168.1.10:30080)
+
+7. Worker Node → kube-proxy
+   kube-proxy (running on node) receives traffic
+   Looks up service endpoints
+
+8. kube-proxy → Service
+   Service selects pods based on labels
+   Load balances to one of the pod IPs
+
+9. Service → Pod
+   Traffic forwarded to pod (e.g., 10.0.10.5:8080)
+
+10. Pod → Application
+    Application processes request and responds
+
+11. Response follows reverse path back to user
+</code></pre>
+
+<p><strong>Key Components:</strong>
+- <strong>ALB</strong>: Layer 7 load balancer, SSL termination
+- <strong>Target Group</strong>: Health checks, routing rules
+- <strong>NodePort</strong>: Exposes service on each node
+- <strong>Service</strong>: Stable endpoint, load balancing
+- <strong>Pod</strong>: Actual application container</p>
+<h3 id="scenario-2-pod-to-pod-communication-same-node">Scenario 2: Pod to Pod Communication (Same Node)</h3>
+<p><strong>Setup:</strong>
+- Two pods on the same worker node
+- Both pods in same VPC subnet</p>
+<p><strong>Traffic Flow:</strong></p>
+<pre class="codehilite"><code>1. Pod A (10.0.10.5) wants to reach Pod B (10.0.10.6)
+
+2. Pod A → VPC CNI
+   Pod A's network namespace sends packet
+   Source: 10.0.10.5, Destination: 10.0.10.6
+
+3. VPC CNI → Node's Network Stack
+   Packet goes through node's network interface
+   Linux routing determines it's local
+
+4. Node's Network Stack → Pod B
+   Since both pods on same node, traffic stays local
+   Directly forwarded to Pod B's network namespace
+
+5. Pod B receives packet and processes
+</code></pre>
+
+<p><strong>Key Points:</strong>
+- No NAT involved
+- Traffic stays on the node
+- Very low latency
+- Uses Linux network namespaces</p>
+<h3 id="scenario-3-pod-to-pod-communication-different-nodes">Scenario 3: Pod to Pod Communication (Different Nodes)</h3>
+<p><strong>Setup:</strong>
+- Pod A on Node 1 (subnet 10.0.10.0/24)
+- Pod B on Node 2 (subnet 10.0.11.0/24)
+- Both in same VPC</p>
+<p><strong>Traffic Flow:</strong></p>
+<pre class="codehilite"><code>1. Pod A (10.0.10.5) wants to reach Pod B (10.0.11.10)
+
+2. Pod A → Node 1's Network Stack
+   Packet: Source 10.0.10.5, Dest 10.0.11.10
+
+3. Node 1 → VPC Routing
+   Node 1's route table says:
+   - 10.0.11.0/24 is in different subnet
+   - Route via VPC routing (local route)
+
+4. VPC Routing → Node 2
+   VPC routing table forwards packet to Node 2
+   (Both nodes in same VPC, can route directly)
+
+5. Node 2 → Pod B
+   Node 2 receives packet
+   VPC CNI forwards to Pod B's network namespace
+
+6. Pod B receives and processes
+</code></pre>
+
+<p><strong>Key Points:</strong>
+- Uses VPC routing (not overlay network)
+- Traffic goes through VPC network
+- Still no NAT (direct pod-to-pod)
+- Works because pods have real VPC IPs</p>
+<h3 id="scenario-4-pod-to-aws-service-rds">Scenario 4: Pod to AWS Service (RDS)</h3>
+<p><strong>Setup:</strong>
+- Pod in EKS cluster
+- RDS database in same VPC
+- Security groups configured</p>
+<p><strong>Traffic Flow:</strong></p>
+<pre class="codehilite"><code>1. Pod (10.0.10.5) wants to connect to RDS (10.0.20.50:5432)
+
+2. Pod → Node's Network Stack
+   Packet: Source 10.0.10.5, Dest 10.0.20.50:5432
+
+3. Node → VPC Routing
+   Route table determines 10.0.20.50 is in different subnet
+   Routes via VPC (local route)
+
+4. VPC Routing → RDS Subnet
+   Packet forwarded to RDS subnet
+
+5. Security Group Check (RDS)
+   RDS security group checks:
+   - Inbound rule allows port 5432 from pod's security group
+   - ✅ Allowed
+
+6. RDS receives connection
+   Database processes query
+
+7. Response follows reverse path
+</code></pre>
+
+<p><strong>Key Points:</strong>
+- Direct VPC communication (no internet)
+- Security groups control access
+- Low latency (same VPC)
+- No data transfer charges</p>
+<h3 id="scenario-5-pod-to-internet-outbound">Scenario 5: Pod to Internet (Outbound)</h3>
+<p><strong>Setup:</strong>
+- Pod in private subnet
+- Node has NAT Gateway access</p>
+<p><strong>Traffic Flow:</strong></p>
+<pre class="codehilite"><code>1. Pod (10.0.10.5) wants to reach api.example.com
+
+2. Pod → Node's Network Stack
+   DNS query first (if needed)
+   Then HTTP request
+
+3. Node → NAT Gateway
+   Node's route table says:
+   - 0.0.0.0/0 → NAT Gateway
+   - Source IP: Node's private IP (10.0.10.100)
+   - Destination: api.example.com IP
+
+4. NAT Gateway → Internet Gateway
+   NAT Gateway performs Source NAT (SNAT)
+   Changes source IP to NAT Gateway's public IP
+   Forwards to Internet Gateway
+
+5. Internet Gateway → Internet
+   Packet goes to public internet
+   Reaches api.example.com
+
+6. Response comes back:
+   Internet → IGW → NAT Gateway → Node → Pod
+   NAT Gateway remembers connection (stateful)
+   Forwards response to correct node/pod
+</code></pre>
+
+<p><strong>Key Points:</strong>
+- NAT Gateway performs Source NAT
+- Pod's IP is hidden (uses NAT's public IP)
+- Stateful connection tracking
+- One-way: Pod can initiate, but internet can't reach pod directly</p>
+<h3 id="scenario-6-internet-to-pod-via-nlb-tcpudp">Scenario 6: Internet to Pod via NLB (TCP/UDP)</h3>
+<p><strong>Setup:</strong>
+- Service type: LoadBalancer with NLB
+- TCP-based application</p>
+<p><strong>Traffic Flow:</strong></p>
+<pre class="codehilite"><code>1. Internet → NLB
+   Client connects to NLB's public IP:Port
+
+2. NLB → Target Group
+   NLB forwards to target group
+   Targets: Node IPs on NodePort
+
+3. Target Group → Worker Node
+   Health checks ensure node is healthy
+   Forwards to node (e.g., 192.168.1.10:30080)
+
+4. Worker Node → kube-proxy
+   kube-proxy receives on NodePort
+   Looks up service endpoints
+
+5. kube-proxy → Service
+   Service selects pod
+   Load balances to pod IP
+
+6. Service → Pod
+   Traffic forwarded to pod
+
+7. Pod processes and responds
+</code></pre>
+
+<p><strong>Key Differences from ALB:</strong>
+- <strong>Layer 4</strong>: Works with TCP/UDP (not just HTTP)
+- <strong>Preserves source IP</strong>: Can see original client IP
+- <strong>Lower latency</strong>: No HTTP processing overhead
+- <strong>Static IPs</strong>: NLB provides static IP addresses</p>
+<h3 id="scenario-7-pod-to-pod-via-service">Scenario 7: Pod to Pod via Service</h3>
+<p><strong>Setup:</strong>
+- Frontend pod wants to reach backend service
+- Service type: ClusterIP</p>
+<p><strong>Traffic Flow:</strong></p>
+<pre class="codehilite"><code>1. Frontend Pod (10.0.10.5) wants backend-service
+
+2. Frontend Pod → DNS Query
+   Queries CoreDNS: backend-service.default.svc.cluster.local
+   CoreDNS responds: 10.100.0.50 (Service ClusterIP)
+
+3. Frontend Pod → Service IP
+   Sends packet to 10.100.0.50:8080
+
+4. Service IP → kube-proxy
+   kube-proxy intercepts (using iptables or IPVS)
+   Looks up endpoints for backend-service
+
+5. kube-proxy → Endpoint Selection
+   Service has 3 endpoints (pods):
+   - 10.0.10.10:8080
+   - 10.0.11.5:8080
+   - 10.0.11.15:8080
+   Selects one (round-robin or random)
+
+6. kube-proxy → Destination NAT (DNAT)
+   Changes destination IP from 10.100.0.50 to 10.0.10.10
+   Forwards packet
+
+7. Packet → Backend Pod
+   Backend pod (10.0.10.10) receives request
+
+8. Response:
+   Backend pod responds directly to frontend pod (10.0.10.5)
+   (kube-proxy is transparent for return traffic)
+</code></pre>
+
+<p><strong>Key Points:</strong>
+- Service IP is virtual (doesn't exist on wire)
+- kube-proxy does DNAT (Destination NAT)
+- Load balancing happens at kube-proxy level
+- Return traffic bypasses service (direct pod-to-pod)</p>
+<hr />
+<h2 id="common-interview-scenarios">Common Interview Scenarios</h2>
+<h3 id="scenario-1-how-would-you-design-networking-for-a-3-tier-application-on-eks">Scenario 1: "How would you design networking for a 3-tier application on EKS?"</h3>
+<p><strong>Answer Structure:</strong></p>
+<p><strong>Architecture:</strong></p>
+<pre class="codehilite"><code>Internet → ALB → Ingress → Services → Pods
+
+Tiers:
+1. Web Tier (Frontend)
+   - Public-facing
+   - ALB Ingress
+   - Public subnets (optional) or private with ALB
+
+2. App Tier (Backend API)
+   - Internal only
+   - ClusterIP service
+   - Private subnets
+
+3. Data Tier (Database)
+   - RDS in private subnet
+   - No Kubernetes, separate AWS service
+</code></pre>
+
+<p><strong>Detailed Design:</strong></p>
+<ol>
+<li><strong>VPC Setup:</strong>
+   ```
+   VPC: 10.0.0.0/16</li>
+</ol>
+<p>Public Subnets (for ALB):
+   - 10.0.1.0/24 (us-east-1a)
+   - 10.0.2.0/24 (us-east-1b)</p>
+<p>Private Subnets (for EKS nodes):
+   - 10.0.10.0/24 (us-east-1a)
+   - 10.0.11.0/24 (us-east-1b)</p>
+<p>Database Subnets:
+   - 10.0.20.0/24 (us-east-1a)
+   - 10.0.21.0/24 (us-east-1b)
+   ```</p>
+<ol>
+<li><strong>Networking Components:</strong></li>
+<li><strong>Internet Gateway</strong>: For ALB public access</li>
+<li><strong>NAT Gateway</strong>: For nodes to pull images, access ECR</li>
+<li><strong>Route Tables</strong>: <ul>
+<li>Public: Route to IGW</li>
+<li>Private: Route to NAT Gateway</li>
+</ul>
+</li>
+<li>
+<p><strong>Security Groups</strong>:</p>
+<ul>
+<li>ALB SG: Allow 80, 443 from internet</li>
+<li>Node SG: Allow from ALB SG, inter-node communication</li>
+<li>RDS SG: Allow 3306 from node SG</li>
+</ul>
+</li>
+<li>
+<p><strong>Kubernetes Setup:</strong></p>
+</li>
+<li><strong>EKS Cluster</strong>: In private subnets</li>
+<li><strong>Worker Nodes</strong>: Managed node groups in private subnets</li>
+<li><strong>VPC CNI</strong>: For pod networking</li>
+<li><strong>ALB Ingress Controller</strong>: For web tier</li>
+<li><strong>Services</strong>:<ul>
+<li>Web: LoadBalancer or Ingress</li>
+<li>App: ClusterIP (internal)</li>
+</ul>
+</li>
+<li>
+<p><strong>Network Policies</strong>: Restrict app tier to only accept from web tier</p>
+</li>
+<li>
+<p><strong>Traffic Flow:</strong>
+   <code>User → Internet → ALB → Ingress → Web Service → Web Pods
+   Web Pod → App Service (ClusterIP) → App Pods
+   App Pod → RDS (direct VPC) → Database</code></p>
+</li>
+</ol>
+<h3 id="scenario-2-a-pod-cannot-reach-the-internet-how-do-you-troubleshoot">Scenario 2: "A pod cannot reach the internet. How do you troubleshoot?"</h3>
+<p><strong>Troubleshooting Steps:</strong></p>
+<ol>
+<li><strong>Check Pod's Network Configuration:</strong>
+   <code>bash
+   kubectl exec -it &lt;pod-name&gt; -- ip addr
+   kubectl exec -it &lt;pod-name&gt; -- route -n</code></li>
+<li>Verify pod has IP address</li>
+<li>
+<p>Check routing table</p>
+</li>
+<li>
+<p><strong>Check Node's Network:</strong>
+   <code>bash
+   # SSH to node
+   ip route show</code></p>
+</li>
+<li>Verify route to NAT Gateway (0.0.0.0/0 → nat-xxx)</li>
+<li>
+<p>Check if node can reach internet</p>
+</li>
+<li>
+<p><strong>Check Security Groups:</strong></p>
+</li>
+<li>Node security group: Allow outbound to 0.0.0.0/0</li>
+<li>
+<p>Pod security group (if using VPC CNI with SG): Allow outbound</p>
+</li>
+<li>
+<p><strong>Check Route Tables:</strong></p>
+</li>
+<li>Private subnet route table should have: 0.0.0.0/0 → NAT Gateway</li>
+<li>
+<p>Verify NAT Gateway is in correct subnet</p>
+</li>
+<li>
+<p><strong>Test Connectivity:</strong>
+   ```bash
+   # From pod
+   kubectl exec -it <pod-name> -- curl -v https://www.google.com</p>
+</li>
+</ol>
+<p># From node
+   curl -v https://www.google.com
+   ```</p>
+<ol>
+<li><strong>Check NAT Gateway:</strong></li>
+<li>Verify NAT Gateway is running</li>
+<li>Check NAT Gateway route table association</li>
+<li>
+<p>Verify NAT Gateway has Elastic IP</p>
+</li>
+<li>
+<p><strong>Check VPC CNI:</strong>
+   <code>bash
+   kubectl get pods -n kube-system | grep vpc-cni
+   kubectl logs -n kube-system &lt;vpc-cni-pod&gt;</code></p>
+</li>
+</ol>
+<p><strong>Common Issues:</strong>
+- Missing NAT Gateway route
+- Security group blocking outbound
+- NAT Gateway in wrong subnet
+- VPC CNI not configured properly</p>
+<h3 id="scenario-3-how-do-you-ensure-pods-in-different-namespaces-cannot-communicate">Scenario 3: "How do you ensure pods in different namespaces cannot communicate?"</h3>
+<p><strong>Solution: Network Policies</strong></p>
+<ol>
+<li><strong>Enable Network Policy Support:</strong></li>
+<li>EKS with Calico CNI, or</li>
+<li>
+<p>VPC CNI with network policy support</p>
+</li>
+<li>
+<p><strong>Create Default Deny Policy:</strong>
+   ```yaml
+   # namespace-default-deny.yaml
+   apiVersion: networking.k8s.io/v1
+   kind: NetworkPolicy
+   metadata:
+     name: default-deny-all
+     namespace: production
+   spec:
+     podSelector: {}
+     policyTypes:</p>
+<ul>
+<li>Ingress</li>
+<li>Egress
+   ```</li>
+</ul>
+</li>
+<li>
+<p><strong>Create Allow Policies:</strong>
+   ```yaml
+   # Allow frontend to backend
+   apiVersion: networking.k8s.io/v1
+   kind: NetworkPolicy
+   metadata:
+     name: allow-frontend-to-backend
+     namespace: production
+   spec:
+     podSelector:
+       matchLabels:
+         app: backend
+     policyTypes:</p>
+<ul>
+<li>Ingress
+ ingress:</li>
+<li>from:</li>
+<li>namespaceSelector:
+       matchLabels:
+         name: production</li>
+<li>podSelector:
+       matchLabels:
+         app: frontend
+   ports:</li>
+<li>protocol: TCP
+     port: 8080
+   ```</li>
+</ul>
+</li>
+<li>
+<p><strong>Namespace Isolation:</strong></p>
+</li>
+<li>Apply default deny to each namespace</li>
+<li>Explicitly allow only required communication</li>
+<li>Use namespace selectors to control cross-namespace access</li>
+</ol>
+<h3 id="scenario-4-how-would-you-expose-a-grpc-service-externally">Scenario 4: "How would you expose a gRPC service externally?"</h3>
+<p><strong>Options:</strong></p>
+<p><strong>Option 1: NLB (Recommended for gRPC)</strong></p>
+<pre class="codehilite"><code class="language-yaml">apiVersion: v1
+kind: Service
+metadata:
+  name: grpc-service
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: &quot;nlb&quot;
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 50051
+    targetPort: 50051
+    protocol: TCP
+  selector:
+    app: grpc-app
+</code></pre>
+
+<p><strong>Why NLB?</strong>
+- gRPC uses HTTP/2 over TCP
+- NLB is Layer 4, works with any TCP protocol
+- Lower latency than ALB
+- Preserves source IP</p>
+<p><strong>Option 2: ALB with gRPC support</strong></p>
+<pre class="codehilite"><code class="language-yaml">apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: grpc-ingress
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/backend-protocol: GRPC
+    alb.ingress.kubernetes.io/listen-ports: '[{&quot;HTTP&quot;: 80}, {&quot;HTTPS&quot;: 443}]'
+spec:
+  rules:
+  - host: grpc.example.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: grpc-service
+            port:
+              number: 50051
+</code></pre>
+
+<p><strong>Traffic Flow:</strong></p>
+<pre class="codehilite"><code>Client → NLB/ALB → NodePort → Service → gRPC Pods
+</code></pre>
+
+<h3 id="scenario-5-how-do-you-handle-ip-address-exhaustion-in-eks">Scenario 5: "How do you handle IP address exhaustion in EKS?"</h3>
+<p><strong>Problem:</strong>
+- VPC CNI uses real VPC IPs
+- Limited by ENI and IP limits per instance
+- Running out of IPs as cluster grows</p>
+<p><strong>Solutions:</strong></p>
+<ol>
+<li><strong>Use Secondary IP Ranges:</strong></li>
+<li>Assign secondary CIDR blocks to VPC</li>
+<li>Configure VPC CNI to use secondary IPs</li>
+<li>
+<p>Increases available IP pool</p>
+</li>
+<li>
+<p><strong>Use Fargate:</strong></p>
+</li>
+<li>Pods run on AWS-managed infrastructure</li>
+<li>No need to manage IP allocation</li>
+<li>
+<p>Scales automatically</p>
+</li>
+<li>
+<p><strong>Optimize IP Usage:</strong></p>
+</li>
+<li>Use host networking for specific pods (if appropriate)</li>
+<li>Reduce number of pods per node</li>
+<li>
+<p>Use larger instance types (more ENIs/IPs)</p>
+</li>
+<li>
+<p><strong>Switch CNI:</strong></p>
+</li>
+<li>Use overlay network CNI (Calico, Flannel)</li>
+<li>Pods get overlay IPs, not VPC IPs</li>
+<li>
+<p>Trade-off: Lose some VPC integration features</p>
+</li>
+<li>
+<p><strong>VPC CNI Configuration:</strong>
+   ```yaml
+   # vpc-cni config
+   env:</p>
+</li>
+<li>name: WARM_IP_TARGET
+     value: "2"  # Reduce warm IP pool</li>
+<li>name: MINIMUM_IP_TARGET
+     value: "2"  # Minimum IPs per ENI
+   ```</li>
+</ol>
+<h3 id="scenario-6-design-networking-for-multi-region-eks-deployment">Scenario 6: "Design networking for multi-region EKS deployment"</h3>
+<p><strong>Architecture:</strong></p>
+<ol>
+<li><strong>Per-Region Setup:</strong>
+   ```
+   Region 1 (us-east-1):</li>
+<li>VPC: 10.0.0.0/16</li>
+<li>EKS Cluster</li>
+<li>ALB</li>
+</ol>
+<p>Region 2 (us-west-2):
+   - VPC: 10.1.0.0/16
+   - EKS Cluster
+   - ALB
+   ```</p>
+<ol>
+<li><strong>Global Traffic Management:</strong></li>
+<li><strong>Route 53</strong>: Health checks, failover, geolocation</li>
+<li><strong>CloudFront</strong>: CDN in front (optional)</li>
+<li>
+<p><strong>Global Accelerator</strong>: For lower latency (optional)</p>
+</li>
+<li>
+<p><strong>Cross-Region Communication:</strong></p>
+</li>
+<li><strong>VPC Peering</strong>: Direct connection (if needed)</li>
+<li><strong>Transit Gateway</strong>: Hub-and-spoke model</li>
+<li><strong>PrivateLink</strong>: For AWS services</li>
+<li>
+<p><strong>VPN</strong>: For on-premises connectivity</p>
+</li>
+<li>
+<p><strong>Data Replication:</strong></p>
+</li>
+<li>RDS Cross-Region Read Replicas</li>
+<li>DynamoDB Global Tables</li>
+<li>
+<p>S3 Cross-Region Replication</p>
+</li>
+<li>
+<p><strong>Traffic Flow:</strong>
+   <code>User → Route 53 → Region 1 ALB → EKS → App
+                    ↓ (if Region 1 down)
+                    Region 2 ALB → EKS → App</code></p>
+</li>
+</ol>
+<h3 id="scenario-7-how-do-you-secure-pod-to-pod-communication">Scenario 7: "How do you secure pod-to-pod communication?"</h3>
+<p><strong>Multi-Layer Security:</strong></p>
+<ol>
+<li><strong>Network Policies:</strong></li>
+<li>Define allowed ingress/egress</li>
+<li>Label-based selection</li>
+<li>
+<p>Namespace isolation</p>
+</li>
+<li>
+<p><strong>Security Groups (VPC CNI):</strong></p>
+</li>
+<li>Assign security groups to pods</li>
+<li>Traditional AWS security model</li>
+<li>
+<p>Works with VPC CNI</p>
+</li>
+<li>
+<p><strong>Service Mesh (Istio/Linkerd):</strong></p>
+</li>
+<li>mTLS between pods</li>
+<li>Fine-grained policies</li>
+<li>
+<p>Observability</p>
+</li>
+<li>
+<p><strong>Pod Security Standards:</strong></p>
+</li>
+<li>Run pods as non-root</li>
+<li>Read-only root filesystem</li>
+<li>Drop unnecessary capabilities</li>
+</ol>
+<p><strong>Example Network Policy:</strong></p>
+<pre class="codehilite"><code class="language-yaml">apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: secure-backend
+spec:
+  podSelector:
+    matchLabels:
+      app: backend
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app: frontend
+    ports:
+    - protocol: TCP
+      port: 8080
+  egress:
+  - to:
+    - podSelector:
+        matchLabels:
+          app: database
+    ports:
+    - protocol: TCP
+      port: 5432
+  - to: []  # Allow DNS
+    ports:
+    - protocol: UDP
+      port: 53
+</code></pre>
+
+<hr />
+<h2 id="troubleshooting-guide">Troubleshooting Guide</h2>
+<h3 id="common-issues-and-solutions">Common Issues and Solutions</h3>
+<h4 id="issue-1-pods-cannot-reach-each-other">Issue 1: Pods cannot reach each other</h4>
+<p><strong>Symptoms:</strong>
+- Pod A cannot ping Pod B
+- Connection timeouts</p>
+<p><strong>Checks:</strong>
+1. Verify pods have IP addresses: <code>kubectl get pods -o wide</code>
+2. Check if pods are in same namespace (if using network policies)
+3. Verify network policies allow communication
+4. Check security groups (if using VPC CNI with SG)
+5. Verify VPC CNI is running: <code>kubectl get pods -n kube-system | grep vpc-cni</code></p>
+<p><strong>Solutions:</strong>
+- Fix network policies
+- Check security group rules
+- Restart VPC CNI pods
+- Verify route tables</p>
+<h4 id="issue-2-service-not-accessible">Issue 2: Service not accessible</h4>
+<p><strong>Symptoms:</strong>
+- Cannot reach service from pod
+- DNS resolution fails</p>
+<p><strong>Checks:</strong>
+1. Verify service exists: <code>kubectl get svc</code>
+2. Check service endpoints: <code>kubectl get endpoints &lt;service-name&gt;</code>
+3. Test DNS: <code>kubectl run -it --rm debug --image=busybox -- nslookup &lt;service-name&gt;</code>
+4. Check kube-proxy: <code>kubectl get pods -n kube-system | grep kube-proxy</code>
+5. Verify CoreDNS: <code>kubectl get pods -n kube-system | grep coredns</code></p>
+<p><strong>Solutions:</strong>
+- Ensure pods have correct labels (matching service selector)
+- Restart kube-proxy if needed
+- Check CoreDNS logs
+- Verify service selector matches pod labels</p>
+<h4 id="issue-3-ingress-not-working">Issue 3: Ingress not working</h4>
+<p><strong>Symptoms:</strong>
+- Cannot access application via Ingress URL
+- 404 or connection refused</p>
+<p><strong>Checks:</strong>
+1. Verify Ingress resource: <code>kubectl get ingress</code>
+2. Check Ingress Controller: <code>kubectl get pods -n kube-system | grep ingress</code>
+3. Verify ALB was created: Check AWS Console
+4. Check target group health: AWS Console → EC2 → Target Groups
+5. Verify service exists and has endpoints
+6. Check Ingress Controller logs</p>
+<p><strong>Solutions:</strong>
+- Ensure Ingress Controller is installed and running
+- Verify Ingress annotations are correct
+- Check ALB security group allows traffic
+- Verify service is correctly referenced in Ingress</p>
+<h4 id="issue-4-high-latency-between-pods">Issue 4: High latency between pods</h4>
+<p><strong>Symptoms:</strong>
+- Slow communication between pods
+- High network latency</p>
+<p><strong>Checks:</strong>
+1. Check if pods are on same node: <code>kubectl get pods -o wide</code>
+2. Verify VPC CNI configuration
+3. Check for network policies (may add overhead)
+4. Monitor network metrics
+5. Check instance types (network performance)</p>
+<p><strong>Solutions:</strong>
+- Use placement rules to co-locate related pods
+- Optimize network policies
+- Use enhanced networking on instances
+- Consider service mesh for better routing</p>
+<h4 id="issue-5-ip-address-exhaustion">Issue 5: IP address exhaustion</h4>
+<p><strong>Symptoms:</strong>
+- Pods stuck in Pending state
+- "Insufficient IP addresses" errors</p>
+<p><strong>Checks:</strong>
+1. Check available IPs in subnets: AWS Console → VPC → Subnets
+2. Verify ENI limits per instance type
+3. Check VPC CNI configuration
+4. Count pods per node</p>
+<p><strong>Solutions:</strong>
+- Add secondary CIDR to VPC
+- Use larger instance types (more ENIs)
+- Reduce pods per node
+- Consider Fargate
+- Switch to overlay CNI</p>
+<hr />
+<h2 id="key-takeaways-for-interviews">Key Takeaways for Interviews</h2>
+<h3 id="aws-networking-essentials">AWS Networking Essentials:</h3>
+<ol>
+<li><strong>VPC</strong> = Your private network in AWS</li>
+<li><strong>Subnets</strong> = Smaller networks within VPC (public/private)</li>
+<li><strong>IGW</strong> = Door to internet (for public subnets)</li>
+<li><strong>NAT Gateway</strong> = One-way door to internet (for private subnets)</li>
+<li><strong>Route Tables</strong> = GPS for network traffic</li>
+<li><strong>Security Groups</strong> = Firewall at instance level (stateful)</li>
+<li><strong>NACLs</strong> = Firewall at subnet level (stateless)</li>
+<li><strong>Load Balancers</strong> = Distribute traffic (ALB Layer 7, NLB Layer 4)</li>
+</ol>
+<h3 id="kubernetes-networking-essentials">Kubernetes Networking Essentials:</h3>
+<ol>
+<li><strong>Pods</strong> = Smallest unit, each gets an IP</li>
+<li><strong>Services</strong> = Stable endpoint to reach pods</li>
+<li><strong>Ingress</strong> = Smart router for HTTP/HTTPS</li>
+<li><strong>CNI</strong> = Plugin that gives pods IP addresses</li>
+<li><strong>Network Policies</strong> = Firewall rules for pods</li>
+<li><strong>DNS</strong> = Service discovery (CoreDNS)</li>
+</ol>
+<h3 id="eks-integration">EKS Integration:</h3>
+<ol>
+<li><strong>VPC CNI</strong> = Pods get real VPC IPs</li>
+<li><strong>ALB Ingress Controller</strong> = Creates ALB from Ingress</li>
+<li><strong>NLB</strong> = For TCP/UDP or high performance</li>
+<li><strong>Security Groups</strong> = Can apply to pods (with VPC CNI)</li>
+</ol>
+<h3 id="traffic-flow-patterns">Traffic Flow Patterns:</h3>
+<ol>
+<li><strong>Internet → Pod</strong>: Internet → ALB/NLB → NodePort → Service → Pod</li>
+<li><strong>Pod → Pod (same node)</strong>: Direct, no routing</li>
+<li><strong>Pod → Pod (different node)</strong>: Via VPC routing</li>
+<li><strong>Pod → AWS Service</strong>: Direct VPC, security groups</li>
+<li><strong>Pod → Internet</strong>: Pod → Node → NAT Gateway → IGW → Internet</li>
+</ol>
+<h3 id="interview-tips">Interview Tips:</h3>
+<ol>
+<li><strong>Always start with the user/request</strong>: "A user makes a request..."</li>
+<li><strong>Follow the packet</strong>: Trace the packet through each component</li>
+<li><strong>Mention security</strong>: Security groups, network policies, encryption</li>
+<li><strong>Consider failure scenarios</strong>: What if a component fails?</li>
+<li><strong>Think about scale</strong>: How does this work with 1000 pods?</li>
+<li><strong>Use diagrams</strong>: Draw it out if possible (mentally or on paper)</li>
+</ol>
+<hr />
+<h2 id="additional-resources">Additional Resources</h2>
+<h3 id="aws-services-to-know">AWS Services to Know:</h3>
+<ul>
+<li>VPC, Subnets, IGW, NAT Gateway</li>
+<li>Route Tables, Security Groups, NACLs</li>
+<li>ALB, NLB, CLB</li>
+<li>VPC Peering, VPC Endpoints</li>
+<li>Route 53, CloudFront</li>
+<li>EKS, ECR</li>
+</ul>
+<h3 id="kubernetes-concepts">Kubernetes Concepts:</h3>
+<ul>
+<li>Pods, Services, Ingress</li>
+<li>Network Policies</li>
+<li>CNI plugins</li>
+<li>DNS (CoreDNS)</li>
+<li>kube-proxy</li>
+</ul>
+<h3 id="tools-for-troubleshooting">Tools for Troubleshooting:</h3>
+<ul>
+<li><code>kubectl</code>: Get pods, services, endpoints, logs</li>
+<li><code>ip</code>, <code>route</code>, <code>netstat</code>: Network debugging on nodes</li>
+<li><code>curl</code>, <code>wget</code>, <code>nslookup</code>: Connectivity testing</li>
+<li>AWS Console: VPC, EC2, Load Balancers</li>
+<li>VPC Flow Logs: Network traffic analysis</li>
+</ul>
+<hr />
+<p><strong>Remember</strong>: Networking is about understanding how data flows from point A to point B. Always think about:
+1. <strong>Source</strong>: Where is the request coming from?
+2. <strong>Destination</strong>: Where does it need to go?
+3. <strong>Path</strong>: What components does it pass through?
+4. <strong>Security</strong>: What checks happen along the way?
+5. <strong>Failure</strong>: What if something breaks?</p>
+<p>Good luck with your interviews! 🚀</p>
+    </div>
+</body>
+</html>

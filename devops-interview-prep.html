@@ -1,0 +1,2122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevOps Interview Preparation - 9 Years Experience</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        nav {
+            background: #2c3e50;
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        nav ul {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+        
+        nav a:hover {
+            background: #34495e;
+        }
+        
+        main {
+            padding: 2rem;
+        }
+        
+        section {
+            margin-bottom: 3rem;
+            scroll-margin-top: 80px;
+        }
+        
+        h2 {
+            color: #667eea;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+        }
+        
+        h3 {
+            color: #764ba2;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+        
+        h4 {
+            color: #555;
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .collapsible {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+        
+        .collapsible-header {
+            background: #e9ecef;
+            padding: 1rem;
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+        }
+        
+        .collapsible-header:hover {
+            background: #dee2e6;
+        }
+        
+        .collapsible-header::after {
+            content: '+';
+            font-size: 1.5rem;
+            transition: transform 0.3s;
+        }
+        
+        .collapsible.active .collapsible-header::after {
+            transform: rotate(45deg);
+        }
+        
+        .collapsible-content {
+            padding: 0 1rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s, padding 0.3s;
+        }
+        
+        .collapsible.active .collapsible-content {
+            padding: 1rem;
+            max-height: 5000px;
+        }
+        
+        ul, ol {
+            margin-left: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        li {
+            margin-bottom: 0.5rem;
+        }
+        
+        code {
+            background: #f4f4f4;
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 1rem;
+            border-radius: 4px;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+        
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+        }
+        
+        .highlight {
+            background: #fff3cd;
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        
+        th, td {
+            border: 1px solid #dee2e6;
+            padding: 0.75rem;
+            text-align: left;
+        }
+        
+        th {
+            background: #667eea;
+            color: white;
+        }
+        
+        tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        
+        .practice-box {
+            background: #e7f3ff;
+            border-left: 4px solid #2196F3;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+        
+        .practice-box h4 {
+            color: #1976D2;
+            margin-top: 0;
+        }
+        
+        .key-point {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+        
+        .key-point h4 {
+            color: #155724;
+            margin-top: 0;
+        }
+        
+        .answer-box {
+            background: #fff9e6;
+            border-left: 4px solid #ff9800;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+        
+        .answer-box h4 {
+            color: #e65100;
+            margin-top: 0;
+            margin-bottom: 1rem;
+        }
+        
+        .answer-box ol {
+            margin-left: 1.5rem;
+        }
+        
+        .answer-box li {
+            margin-bottom: 1rem;
+        }
+        
+        .answer-box strong {
+            color: #e65100;
+        }
+        
+        @media print {
+            nav {
+                display: none;
+            }
+            
+            .collapsible-content {
+                max-height: none !important;
+                padding: 1rem !important;
+            }
+            
+            .collapsible-header {
+                cursor: default;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8rem;
+            }
+            
+            nav ul {
+                flex-direction: column;
+            }
+            
+            main {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>DevOps Interview Preparation</h1>
+            <p>9 Years Experience - Comprehensive Guide</p>
+        </header>
+        
+        <nav>
+            <ul>
+                <li><a href="#aws">AWS & Cost Optimization</a></li>
+                <li><a href="#scripting">Scripting</a></li>
+                <li><a href="#cicd">CI/CD (Jenkins)</a></li>
+                <li><a href="#terraform">Terraform</a></li>
+                <li><a href="#documentation">Documentation</a></li>
+                <li><a href="#product">Product Understanding</a></li>
+                <li><a href="#additional">Additional Topics</a></li>
+                <li><a href="#practice">Practice Questions</a></li>
+            </ul>
+        </nav>
+        
+        <main>
+            <section id="aws">
+                <h2>AWS Expertise & Cost Optimization</h2>
+                
+                <div class="key-point">
+                    <h4>Key AWS Services</h4>
+                    <ul>
+                        <li><strong>Compute:</strong> EC2, Lambda, ECS, EKS, Fargate</li>
+                        <li><strong>Storage:</strong> S3, EBS, EFS, Glacier</li>
+                        <li><strong>Database:</strong> RDS, DynamoDB, ElastiCache, Redshift</li>
+                        <li><strong>Networking:</strong> VPC, CloudFront, API Gateway, ELB</li>
+                        <li><strong>Management:</strong> CloudFormation, CloudWatch, Systems Manager</li>
+                        <li><strong>Security:</strong> IAM, KMS, Secrets Manager, WAF</li>
+                    </ul>
+                </div>
+                
+                <h3>Cost Optimization Strategies</h3>
+                
+                <div class="collapsible">
+                    <div class="collapsible-header">Reserved Instances vs Spot Instances</div>
+                    <div class="collapsible-content">
+                        <ul>
+                            <li><strong>Reserved Instances:</strong> 30-75% savings for predictable workloads (1-3 year terms)</li>
+                            <li><strong>Spot Instances:</strong> Up to 90% savings for fault-tolerant, flexible workloads</li>
+                            <li><strong>Savings Plans:</strong> Flexible pricing model for EC2, Lambda, Fargate</li>
+                            <li><strong>Best Practice:</strong> Use Reserved Instances for production, Spot for dev/test and batch jobs</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="collapsible">
+                    <div class="collapsible-header">Right-Sizing Resources</div>
+                    <div class="collapsible-content">
+                        <ul>
+                            <li>Use CloudWatch metrics to identify underutilized resources</li>
+                            <li>Analyze CPU, memory, network utilization over time</li>
+                            <li>Consider instance families: General Purpose, Compute Optimized, Memory Optimized</li>
+                            <li>Use AWS Cost Explorer and Trusted Advisor recommendations</li>
+                            <li>Implement auto-scaling to match demand</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="collapsible">
+                    <div class="collapsible-header">S3 Storage Classes & Lifecycle Policies</div>
+                    <div class="collapsible-content">
+                        <ul>
+                            <li><strong>Standard:</strong> Frequently accessed data</li>
+                            <li><strong>Intelligent-Tiering:</strong> Automatic cost optimization</li>
+                            <li><strong>Standard-IA:</strong> Infrequently accessed (lower cost)</li>
+                            <li><strong>One Zone-IA:</strong> Non-critical, infrequent access</li>
+                            <li><strong>Glacier/Deep Archive:</strong> Long-term archival (cheapest)</li>
+                            <li><strong>Lifecycle Policies:</strong> Automate transitions between storage classes</li>
+                        </ul>
+                        <pre><code># Example S3 Lifecycle Policy
+{
+  "Rules": [{
+    "Id": "TransitionToIA",
+    "Status": "Enabled",
+    "Transitions": [{
+      "Days": 30,
+      "StorageClass": "STANDARD_IA"
+    }],
+    "Expiration": {
+      "Days": 365
+    }
+  }]
+}</code></pre>
+                    </div>
+                </div>
+                
+                <div class="collapsible">
+                    <div class="collapsible-header">Auto-Scaling Configurations</div>
+                    <div class="collapsible-content">
+                        <ul>
+                            <li>Target Tracking: Maintain specific metric (CPU, Network)</li>
+                            <li>Step Scaling: Scale based on CloudWatch alarms</li>
+                            <li>Scheduled Scaling: Predictable traffic patterns</li>
+                            <li>Use Launch Templates for consistent configurations</li>
+                            <li>Implement health checks and graceful shutdowns</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="collapsible">
+                    <div class="collapsible-header">CloudWatch Monitoring & Cost Alerts</div>
+                    <div class="collapsible-content">
+                        <ul>
+                            <li>Set up billing alerts for budget thresholds</li>
+                            <li>Use Cost Anomaly Detection for unexpected spending</li>
+                            <li>Create custom dashboards for cost visibility</li>
+                            <li>Implement detailed billing reports</li>
+                            <li>Tag resources for cost allocation</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="practice-box">
+                    <h4>Practice Questions - AWS Cost Optimization</h4>
+                    <ol>
+                        <li>How would you reduce costs for a web application with variable traffic?</li>
+                        <li>Explain when to use Reserved Instances vs Spot Instances.</li>
+                        <li>How do you implement cost optimization for S3 storage?</li>
+                        <li>Describe your approach to right-sizing EC2 instances.</li>
+                        <li>How would you set up cost monitoring and alerts?</li>
+                    </ol>
+                </div>
+                
+                <div class="answer-box">
+                    <h4>Sample Answers - AWS Cost Optimization</h4>
+                    <ol>
+                        <li><strong>Reducing costs for variable traffic:</strong>
+                            <ul>
+                                <li>Implement Auto Scaling Groups to scale instances based on demand (CPU, network, custom metrics)</li>
+                                <li>Use Application Load Balancer with target tracking to maintain optimal capacity</li>
+                                <li>Leverage Spot Instances for non-critical workloads and dev/test environments</li>
+                                <li>Use Reserved Instances for baseline capacity (30-75% savings)</li>
+                                <li>Implement CloudFront CDN to reduce origin server load and data transfer costs</li>
+                                <li>Use Lambda for serverless compute for event-driven workloads</li>
+                                <li>Implement caching (ElastiCache) to reduce database load</li>
+                                <li>Schedule non-production environments to stop during off-hours</li>
+                            </ul>
+                        </li>
+                        <li><strong>Reserved Instances vs Spot Instances:</strong>
+                            <ul>
+                                <li><strong>Reserved Instances:</strong> Use for predictable, steady-state workloads. Best for production environments with consistent usage. Commit to 1-3 year terms for maximum savings (up to 75%). Ideal for databases, always-on applications.</li>
+                                <li><strong>Spot Instances:</strong> Use for fault-tolerant, flexible workloads that can handle interruptions. Perfect for batch processing, CI/CD agents, dev/test environments, data analysis. Can save up to 90% but requires application to handle termination gracefully.</li>
+                                <li><strong>Hybrid Approach:</strong> Use Reserved Instances for baseline capacity, Spot for variable/peak loads, On-Demand for critical workloads that can't tolerate interruptions.</li>
+                            </ul>
+                        </li>
+                        <li><strong>S3 Cost Optimization:</strong>
+                            <ul>
+                                <li>Implement lifecycle policies to automatically transition objects to cheaper storage classes (Standard → Standard-IA → Glacier → Deep Archive)</li>
+                                <li>Use S3 Intelligent-Tiering for automatic cost optimization without manual management</li>
+                                <li>Enable S3 Transfer Acceleration only when needed (long-distance transfers)</li>
+                                <li>Compress objects before upload to reduce storage and transfer costs</li>
+                                <li>Delete incomplete multipart uploads (set lifecycle rules)</li>
+                                <li>Use appropriate storage class: Standard for frequent access, Standard-IA for infrequent access (30+ days), Glacier for archival (90+ days)</li>
+                                <li>Enable versioning only when necessary (increases storage costs)</li>
+                                <li>Use CloudFront to reduce S3 data transfer costs for content delivery</li>
+                            </ul>
+                        </li>
+                        <li><strong>Right-Sizing EC2 Instances:</strong>
+                            <ul>
+                                <li>Analyze CloudWatch metrics over 2-4 weeks: CPU utilization, memory usage, network I/O, disk I/O</li>
+                                <li>Use AWS Cost Explorer and Trusted Advisor recommendations</li>
+                                <li>Identify underutilized instances (consistently < 40% CPU/memory)</li>
+                                <li>Consider instance families: General Purpose (balanced), Compute Optimized (CPU-intensive), Memory Optimized (memory-intensive), Storage Optimized (I/O-intensive)</li>
+                                <li>Test smaller instance types in staging before production changes</li>
+                                <li>Use AWS Compute Optimizer for automated recommendations</li>
+                                <li>Consider burstable instances (T3/T4g) for variable workloads</li>
+                                <li>Review and adjust regularly as application patterns change</li>
+                            </ul>
+                        </li>
+                        <li><strong>Cost Monitoring and Alerts:</strong>
+                            <ul>
+                                <li>Set up AWS Budgets with alerts at 50%, 80%, 100% of budget thresholds</li>
+                                <li>Enable Cost Anomaly Detection for unexpected spending patterns</li>
+                                <li>Create custom cost allocation tags (Environment, Project, Team, Application)</li>
+                                <li>Set up CloudWatch billing alarms for real-time cost tracking</li>
+                                <li>Use Cost Explorer for detailed analysis and forecasting</li>
+                                <li>Schedule regular cost review meetings with stakeholders</li>
+                                <li>Implement AWS Organizations for multi-account cost management</li>
+                                <li>Use AWS Cost and Usage Reports for detailed analysis</li>
+                                <li>Set up email/SNS notifications for budget alerts</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+            </section>
+            
+            <section id="scripting">
+                <h2>Scripting Capabilities</h2>
+                
+                <h3>Python</h3>
+                <div class="collapsible">
+                    <div class="collapsible-header">Python for DevOps</div>
+                    <div class="collapsible-content">
+                        <ul>
+                            <li><strong>Boto3:</strong> AWS SDK for Python - automate AWS services</li>
+                            <li><strong>Common Libraries:</strong> requests, json, yaml, paramiko, fabric</li>
+                            <li><strong>Best Practices:</strong> Use virtual environments, error handling, logging</li>
+                        </ul>
+                        <pre><code># Example: Boto3 EC2 instance management
+import boto3
+import logging
+
+ec2 = boto3.client('ec2')
+logger = logging.getLogger()
+
+def list_instances():
+    try:
+        response = ec2.describe_instances()
+        for reservation in response['Reservations']:
+            for instance in reservation['Instances']:
+                print(f"Instance ID: {instance['InstanceId']}, "
+                      f"State: {instance['State']['Name']}")
+    except Exception as e:
+        logger.error(f"Error listing instances: {e}")
+        raise
+
+# Error handling pattern
+def create_instance(ami_id, instance_type):
+    try:
+        response = ec2.run_instances(
+            ImageId=ami_id,
+            InstanceType=instance_type,
+            MinCount=1,
+            MaxCount=1
+        )
+        return response['Instances'][0]['InstanceId']
+    except ClientError as e:
+        logger.error(f"Failed to create instance: {e}")
+        return None</code></pre>
+                    </div>
+                </div>
+                
+                <h3>PowerShell</h3>
+                <div class="collapsible">
+                    <div class="collapsible-header">PowerShell for DevOps</div>
+                    <div class="collapsible-content">
+                        <ul>
+                            <li><strong>AWS Tools:</strong> AWS PowerShell module, AWS CLI</li>
+                            <li><strong>Azure:</strong> Az module for Azure automation</li>
+                            <li><strong>Windows Management:</strong> Active Directory, IIS, Windows services</li>
+                            <li><strong>Best Practices:</strong> Use modules, error handling with try-catch, verbose logging</li>
+                        </ul>
+                        <pre><code># Example: PowerShell AWS automation
+Import-Module AWSPowerShell
+
+function Get-EC2Instances {
+    param(
+        [string]$Region = "us-east-1"
+    )
+    
+    try {
+        $instances = Get-EC2Instance -Region $Region
+        foreach ($instance in $instances.Instances) {
+            Write-Output "Instance: $($instance.InstanceId) - State: $($instance.State.Name)"
+        }
+    }
+    catch {
+        Write-Error "Failed to retrieve instances: $_"
+        throw
+    }
+}
+
+# Error handling and logging
+function Deploy-S3Object {
+    param(
+        [string]$BucketName,
+        [string]$FilePath,
+        [string]$Key
+    )
+    
+    try {
+        Write-Verbose "Uploading $FilePath to s3://$BucketName/$Key"
+        Write-S3Object -BucketName $BucketName -File $FilePath -Key $Key
+        Write-Output "Upload successful"
+    }
+    catch {
+        Write-Error "Upload failed: $_"
+        exit 1
+    }
+}</code></pre>
+                    </div>
+                </div>
+                
+                <h3>Bash</h3>
+                <div class="collapsible">
+                    <div class="collapsible-header">Bash Scripting</div>
+                    <div class="collapsible-content">
+                        <ul>
+                            <li><strong>System Administration:</strong> File operations, process management, cron jobs</li>
+                            <li><strong>AWS CLI:</strong> Automate AWS operations from command line</li>
+                            <li><strong>Best Practices:</strong> Use set -euo pipefail, proper quoting, error handling</li>
+                        </ul>
+                        <pre><code>#!/bin/bash
+# Best practices: error handling, logging, validation
+
+set -euo pipefail  # Exit on error, undefined vars, pipe failures
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+LOG_FILE="${SCRIPT_DIR}/deploy.log"
+
+log() {
+    echo "[$(date +'%Y-%m-%d %H:%M:%S')] $1" | tee -a "$LOG_FILE"
+}
+
+# Example: AWS deployment script
+deploy_to_s3() {
+    local bucket_name="$1"
+    local source_dir="$2"
+    
+    if [[ -z "$bucket_name" || -z "$source_dir" ]]; then
+        log "ERROR: Missing required parameters"
+        exit 1
+    fi
+    
+    if [[ ! -d "$source_dir" ]]; then
+        log "ERROR: Source directory does not exist: $source_dir"
+        exit 1
+    fi
+    
+    log "Starting deployment to $bucket_name"
+    
+    if aws s3 sync "$source_dir" "s3://$bucket_name" --delete; then
+        log "Deployment successful"
+    else
+        log "ERROR: Deployment failed"
+        exit 1
+    fi
+}
+
+# Function usage
+deploy_to_s3 "my-bucket" "/path/to/source"</code></pre>
+                    </div>
+                </div>
+                
+                <div class="practice-box">
+                    <h4>Practice Questions - Scripting</h4>
+                    <ol>
+                        <li>Write a Python script to automate EC2 instance backup.</li>
+                        <li>Create a PowerShell script to manage Windows server configurations.</li>
+                        <li>Write a Bash script for automated deployment with error handling.</li>
+                        <li>How do you handle errors and logging in your scripts?</li>
+                        <li>Describe your approach to script testing and validation.</li>
+                    </ol>
+                </div>
+                
+                <div class="answer-box">
+                    <h4>Sample Answers - Scripting</h4>
+                    <ol>
+                        <li><strong>Python EC2 Backup Script:</strong>
+                            <pre><code>import boto3
+import logging
+from datetime import datetime
+from botocore.exceptions import ClientError
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+def create_ami_backup(instance_id, backup_name_prefix='backup'):
+    ec2 = boto3.client('ec2')
+    timestamp = datetime.now().strftime('%Y%m%d-%H%M%S')
+    ami_name = f"{backup_name_prefix}-{instance_id}-{timestamp}"
+    
+    try:
+        response = ec2.create_image(
+            InstanceId=instance_id,
+            Name=ami_name,
+            Description=f"Automated backup of {instance_id}",
+            NoReboot=True
+        )
+        ami_id = response['ImageId']
+        logger.info(f"Created AMI {ami_id} for instance {instance_id}")
+        
+        # Tag the AMI
+        ec2.create_tags(
+            Resources=[ami_id],
+            Tags=[
+                {'Key': 'BackupType', 'Value': 'Automated'},
+                {'Key': 'SourceInstance', 'Value': instance_id},
+                {'Key': 'CreatedDate', 'Value': timestamp}
+            ]
+        )
+        return ami_id
+    except ClientError as e:
+        logger.error(f"Failed to create AMI: {e}")
+        raise
+
+def cleanup_old_backups(instance_id, keep_count=5):
+    ec2 = boto3.client('ec2')
+    try:
+        images = ec2.describe_images(
+            Owners=['self'],
+            Filters=[
+                {'Name': 'tag:SourceInstance', 'Values': [instance_id]}
+            ]
+        )
+        # Sort by creation date and keep only recent ones
+        sorted_images = sorted(
+            images['Images'],
+            key=lambda x: x['CreationDate'],
+            reverse=True
+        )
+        for image in sorted_images[keep_count:]:
+            ec2.deregister_image(ImageId=image['ImageId'])
+            logger.info(f"Deleted old backup: {image['ImageId']}")
+    except ClientError as e:
+        logger.error(f"Failed to cleanup backups: {e}")
+
+if __name__ == '__main__':
+    instance_id = 'i-1234567890abcdef0'
+    create_ami_backup(instance_id)
+    cleanup_old_backups(instance_id)</code></pre>
+                        </li>
+                        <li><strong>PowerShell Windows Server Configuration:</strong>
+                            <pre><code># PowerShell script for Windows server configuration management
+param(
+    [Parameter(Mandatory=$true)]
+    [string]$ServerName,
+    
+    [Parameter(Mandatory=$false)]
+    [string]$ConfigFile = "server-config.json"
+)
+
+$ErrorActionPreference = "Stop"
+
+function Set-ServerConfiguration {
+    param([string]$Server, [hashtable]$Config)
+    
+    try {
+        Write-Verbose "Configuring server: $Server"
+        
+        # Configure Windows Firewall
+        if ($Config.Firewall) {
+            foreach ($rule in $Config.Firewall.Rules) {
+                New-NetFirewallRule -DisplayName $rule.Name `
+                    -Direction $rule.Direction `
+                    -Protocol $rule.Protocol `
+                    -LocalPort $rule.Port `
+                    -Action Allow -ErrorAction SilentlyContinue
+            }
+        }
+        
+        # Configure Windows Services
+        if ($Config.Services) {
+            foreach ($service in $Config.Services) {
+                Set-Service -Name $service.Name -StartupType $service.StartupType
+                if ($service.State -eq 'Running') {
+                    Start-Service -Name $service.Name
+                }
+            }
+        }
+        
+        # Install Windows Features
+        if ($Config.Features) {
+            foreach ($feature in $Config.Features) {
+                Install-WindowsFeature -Name $feature -IncludeManagementTools
+            }
+        }
+        
+        Write-Output "Configuration applied successfully"
+    }
+    catch {
+        Write-Error "Configuration failed: $_"
+        throw
+    }
+}
+
+# Load configuration and apply
+$config = Get-Content $ConfigFile | ConvertFrom-Json
+Set-ServerConfiguration -Server $ServerName -Config $config</code></pre>
+                        </li>
+                        <li><strong>Bash Deployment Script with Error Handling:</strong>
+                            <pre><code>#!/bin/bash
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+LOG_FILE="${SCRIPT_DIR}/deploy.log"
+ERROR_LOG="${SCRIPT_DIR}/deploy-errors.log"
+
+log() {
+    echo "[$(date +'%Y-%m-%d %H:%M:%S')] $1" | tee -a "$LOG_FILE"
+}
+
+error_exit() {
+    echo "[$(date +'%Y-%m-%d %H:%M:%S')] ERROR: $1" | tee -a "$ERROR_LOG"
+    exit 1
+}
+
+# Validate prerequisites
+check_prerequisites() {
+    log "Checking prerequisites..."
+    
+    command -v aws >/dev/null 2>&1 || error_exit "AWS CLI not installed"
+    command -v terraform >/dev/null 2>&1 || error_exit "Terraform not installed"
+    
+    if [[ ! -f "${SCRIPT_DIR}/terraform.tfvars" ]]; then
+        error_exit "terraform.tfvars not found"
+    fi
+    
+    log "Prerequisites check passed"
+}
+
+# Deploy infrastructure
+deploy_infrastructure() {
+    log "Starting infrastructure deployment"
+    
+    cd "${SCRIPT_DIR}/infrastructure" || error_exit "Infrastructure directory not found"
+    
+    terraform init || error_exit "Terraform init failed"
+    terraform validate || error_exit "Terraform validation failed"
+    terraform plan -out=tfplan || error_exit "Terraform plan failed"
+    
+    if terraform apply tfplan; then
+        log "Infrastructure deployed successfully"
+    else
+        error_exit "Terraform apply failed"
+    fi
+}
+
+# Deploy application
+deploy_application() {
+    log "Deploying application"
+    
+    local bucket_name="${1:-}"
+    [[ -z "$bucket_name" ]] && error_exit "S3 bucket name required"
+    
+    if aws s3 sync "${SCRIPT_DIR}/app" "s3://${bucket_name}" --delete; then
+        log "Application deployed successfully"
+    else
+        error_exit "Application deployment failed"
+    fi
+}
+
+# Main execution
+main() {
+    log "=== Deployment started ==="
+    
+    check_prerequisites
+    deploy_infrastructure
+    deploy_application "my-app-bucket"
+    
+    log "=== Deployment completed successfully ==="
+}
+
+# Trap errors
+trap 'error_exit "Script failed at line $LINENO"' ERR
+
+main "$@"</code></pre>
+                        </li>
+                        <li><strong>Error Handling and Logging:</strong>
+                            <ul>
+                                <li><strong>Python:</strong> Use try-except blocks, logging module with different levels (DEBUG, INFO, WARNING, ERROR), structured logging with context, handle specific exceptions (ClientError for boto3), use finally blocks for cleanup</li>
+                                <li><strong>PowerShell:</strong> Use try-catch-finally blocks, $ErrorActionPreference variable, Write-Error/Write-Warning/Write-Verbose, -ErrorAction parameter, $LASTEXITCODE for external commands</li>
+                                <li><strong>Bash:</strong> Use set -euo pipefail, trap for error handling, redirect stderr (2>&1), check exit codes ($?), use || and && operators, log to files with timestamps</li>
+                                <li><strong>Best Practices:</strong> Log all operations with timestamps, include context (function name, parameters), use appropriate log levels, implement retry logic for transient failures, send critical errors to monitoring systems</li>
+                            </ul>
+                        </li>
+                        <li><strong>Script Testing and Validation:</strong>
+                            <ul>
+                                <li><strong>Unit Testing:</strong> Use pytest for Python, Pester for PowerShell, shunit2/bats for Bash</li>
+                                <li><strong>Validation:</strong> Input validation (check parameters, file existence, required tools), dry-run modes, syntax checking (shellcheck for Bash, pylint for Python)</li>
+                                <li><strong>Testing Strategy:</strong> Test in isolated environments first, use test data, validate against expected outputs, test error conditions, integration testing with real services in dev environment</li>
+                                <li><strong>Code Quality:</strong> Code reviews, linting, formatting standards, documentation, version control</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+            </section>
+            
+            <section id="cicd">
+                <h2>CI/CD with Jenkins</h2>
+                
+                <div class="key-point">
+                    <h4>Jenkins Pipeline Types</h4>
+                    <ul>
+                        <li><strong>Declarative Pipeline:</strong> Structured, simpler syntax, recommended for most use cases</li>
+                        <li><strong>Scripted Pipeline:</strong> More flexible, Groovy-based, for complex logic</li>
+                        <li><strong>Multi-branch Pipeline:</strong> Automatically creates pipelines for branches</li>
+                    </ul>
+                </div>
+                
+                <h3>Declarative Pipeline Example</h3>
+                <pre><code>pipeline {
+    agent any
+    
+    environment {
+        AWS_REGION = 'us-east-1'
+        TERRAFORM_VERSION = '1.5.0'
+    }
+    
+    options {
+        timeout(time: 1, unit: 'HOURS')
+        buildDiscarder(logRotator(numToKeepStr: '10'))
+    }
+    
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+        
+        stage('Build') {
+            steps {
+                sh 'docker build -t myapp:${BUILD_NUMBER} .'
+            }
+        }
+        
+        stage('Test') {
+            steps {
+                sh 'docker run --rm myapp:${BUILD_NUMBER} npm test'
+            }
+        }
+        
+        stage('Terraform Plan') {
+            steps {
+                dir('infrastructure') {
+                    sh '''
+                        terraform init
+                        terraform plan -out=tfplan
+                    '''
+                }
+            }
+        }
+        
+        stage('Deploy') {
+            when {
+                branch 'main'
+            }
+            steps {
+                dir('infrastructure') {
+                    sh 'terraform apply -auto-approve tfplan'
+                }
+            }
+        }
+    }
+    
+    post {
+        success {
+            echo 'Pipeline succeeded!'
+        }
+        failure {
+            echo 'Pipeline failed!'
+            emailext subject: "Build Failed: ${env.JOB_NAME}",
+                     body: "Build ${env.BUILD_NUMBER} failed.",
+                     to: "${env.CHANGE_AUTHOR_EMAIL}"
+        }
+        always {
+            cleanWs()
+        }
+    }
+}</code></pre>
+                
+                <h3>Best Practices</h3>
+                <div class="collapsible">
+                    <div class="collapsible-header">Security & Credentials Management</div>
+                    <div class="collapsible-content">
+                        <ul>
+                            <li>Use Jenkins Credentials Store (never hardcode secrets)</li>
+                            <li>Implement role-based access control (RBAC)</li>
+                            <li>Use withCredentials block for sensitive data</li>
+                            <li>Rotate credentials regularly</li>
+                            <li>Use AWS IAM roles for EC2 Jenkins agents</li>
+                        </ul>
+                        <pre><code>stage('Deploy') {
+    steps {
+        withCredentials([
+            aws(credentialsId: 'aws-credentials', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')
+        ]) {
+            sh 'aws s3 sync . s3://my-bucket'
+        }
+    }
+}</code></pre>
+                    </div>
+                </div>
+                
+                <div class="collapsible">
+                    <div class="collapsible-header">Integration with Git, Docker, Terraform</div>
+                    <div class="collapsible-content">
+                        <ul>
+                            <li><strong>Git:</strong> Use webhooks for automatic builds, branch strategies</li>
+                            <li><strong>Docker:</strong> Build images, push to registry, use Docker agents</li>
+                            <li><strong>Terraform:</strong> Plan/apply in stages, use remote state, validate before apply</li>
+                            <li>Implement proper artifact management</li>
+                            <li>Use parallel stages for faster pipelines</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="collapsible">
+                    <div class="collapsible-header">Troubleshooting Common Issues</div>
+                    <div class="collapsible-content">
+                        <ul>
+                            <li><strong>Build failures:</strong> Check logs, verify dependencies, test locally</li>
+                            <li><strong>Agent connectivity:</strong> Verify SSH/network, check agent status</li>
+                            <li><strong>Permission issues:</strong> Review RBAC, check file permissions</li>
+                            <li><strong>Resource constraints:</strong> Monitor disk space, memory, CPU</li>
+                            <li><strong>Plugin conflicts:</strong> Keep plugins updated, test in staging</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="practice-box">
+                    <h4>Practice Questions - CI/CD</h4>
+                    <ol>
+                        <li>Design a Jenkins pipeline for a microservices application.</li>
+                        <li>How do you implement security in Jenkins pipelines?</li>
+                        <li>Explain your approach to handling secrets in CI/CD.</li>
+                        <li>How would you optimize a slow Jenkins pipeline?</li>
+                        <li>Describe blue-green deployment using Jenkins.</li>
+                    </ol>
+                </div>
+                
+                <div class="answer-box">
+                    <h4>Sample Answers - CI/CD</h4>
+                    <ol>
+                        <li><strong>Jenkins Pipeline for Microservices:</strong>
+                            <ul>
+                                <li>Use multi-branch pipeline to handle multiple services</li>
+                                <li>Shared library for common pipeline steps (build, test, deploy)</li>
+                                <li>Parallel execution for independent services</li>
+                                <li>Service-specific configuration via Jenkinsfile in each service repo</li>
+                                <li>Stages: Checkout → Build → Unit Tests → Integration Tests → Security Scan → Build Docker Image → Push to Registry → Deploy to Staging → E2E Tests → Deploy to Production</li>
+                                <li>Use matrix builds for multiple service versions</li>
+                                <li>Implement service dependency management</li>
+                            </ul>
+                            <pre><code>pipeline {
+    agent any
+    
+    stages {
+        stage('Build All Services') {
+            parallel {
+                stage('Service A') {
+                    steps {
+                        dir('service-a') {
+                            sh './build.sh'
+                        }
+                    }
+                }
+                stage('Service B') {
+                    steps {
+                        dir('service-b') {
+                            sh './build.sh'
+                        }
+                    }
+                }
+            }
+        }
+        stage('Integration Tests') {
+            steps {
+                sh 'docker-compose up -d'
+                sh 'npm run test:integration'
+            }
+        }
+    }
+}</code></pre>
+                        </li>
+                        <li><strong>Security in Jenkins Pipelines:</strong>
+                            <ul>
+                                <li>Use Jenkins Credentials Store (never hardcode secrets)</li>
+                                <li>Implement Role-Based Access Control (RBAC) with Role Strategy plugin</li>
+                                <li>Use withCredentials block for sensitive data</li>
+                                <li>Enable Content Security Policy</li>
+                                <li>Scan dependencies for vulnerabilities (OWASP Dependency Check)</li>
+                                <li>Use least privilege principle for Jenkins agents</li>
+                                <li>Enable audit logging for pipeline executions</li>
+                                <li>Use AWS IAM roles for EC2 agents instead of access keys</li>
+                                <li>Implement pipeline approval for production deployments</li>
+                                <li>Use Jenkins Configuration as Code (JCasC) for version-controlled config</li>
+                            </ul>
+                        </li>
+                        <li><strong>Handling Secrets in CI/CD:</strong>
+                            <ul>
+                                <li><strong>AWS Secrets Manager/Parameter Store:</strong> Retrieve secrets at runtime, no storage in code</li>
+                                <li><strong>Jenkins Credentials:</strong> Use credential binding plugin, reference by ID</li>
+                                <li><strong>HashiCorp Vault:</strong> Dynamic secrets, time-limited access</li>
+                                <li><strong>Environment Variables:</strong> Set in Jenkins job configuration, not in code</li>
+                                <li><strong>Best Practices:</strong> Rotate secrets regularly, use different secrets per environment, never log secrets, mask secrets in console output, use secret scanning tools</li>
+                            </ul>
+                            <pre><code>// Example: Using AWS Secrets Manager
+stage('Deploy') {
+    steps {
+        script {
+            def secret = sh(
+                script: 'aws secretsmanager get-secret-value --secret-id prod/db-password --query SecretString --output text',
+                returnStdout: true
+            ).trim()
+            withEnv(["DB_PASSWORD=${secret}"]) {
+                sh './deploy.sh'
+            }
+        }
+    }
+}</code></pre>
+                        </li>
+                        <li><strong>Optimizing Slow Jenkins Pipelines:</strong>
+                            <ul>
+                                <li><strong>Parallel Execution:</strong> Run independent stages in parallel</li>
+                                <li><strong>Caching:</strong> Cache dependencies (npm, Maven, Docker layers)</li>
+                                <li><strong>Agent Optimization:</strong> Use dedicated agents, increase agent capacity, use Docker agents for isolation</li>
+                                <li><strong>Build Optimization:</strong> Incremental builds, skip unnecessary steps, use build artifacts</li>
+                                <li><strong>Test Optimization:</strong> Run tests in parallel, use test sharding, skip slow tests in PR builds</li>
+                                <li><strong>Infrastructure:</strong> Use faster storage (SSD), increase memory/CPU, use build caches</li>
+                                <li><strong>Pipeline Design:</strong> Fail fast, use conditional stages, optimize Docker builds (multi-stage, layer caching)</li>
+                                <li><strong>Monitoring:</strong> Use Pipeline Stage View plugin to identify bottlenecks</li>
+                            </ul>
+                        </li>
+                        <li><strong>Blue-Green Deployment with Jenkins:</strong>
+                            <ul>
+                                <li><strong>Concept:</strong> Maintain two identical production environments (blue=current, green=new)</li>
+                                <li><strong>Process:</strong> Deploy new version to green environment → Run smoke tests → Switch traffic from blue to green → Monitor → Keep blue as rollback option</li>
+                                <li><strong>Implementation:</strong> Use load balancer to switch traffic, update DNS, or use service mesh</li>
+                                <li><strong>Rollback:</strong> Switch traffic back to blue if issues detected</li>
+                            </ul>
+                            <pre><code>pipeline {
+    stages {
+        stage('Deploy to Green') {
+            steps {
+                sh 'kubectl set image deployment/app app=myapp:v${BUILD_NUMBER} -n green'
+                sh 'kubectl rollout status deployment/app -n green'
+            }
+        }
+        stage('Smoke Tests') {
+            steps {
+                sh 'curl -f https://green.example.com/health || exit 1'
+            }
+        }
+        stage('Switch Traffic') {
+            steps {
+                sh 'kubectl patch service app -p \'{"spec":{"selector":{"version":"v${BUILD_NUMBER}"}}}\''
+            }
+        }
+        stage('Monitor') {
+            steps {
+                sleep time: 5, unit: 'MINUTES'
+                sh './monitor.sh'
+            }
+        }
+    }
+    post {
+        failure {
+            sh 'kubectl patch service app -p \'{"spec":{"selector":{"version":"previous"}}}\''
+        }
+    }
+}</code></pre>
+                        </li>
+                    </ol>
+                </div>
+            </section>
+            
+            <section id="terraform">
+                <h2>Terraform Advanced Topics</h2>
+                
+                <h3>State Management</h3>
+                <div class="collapsible">
+                    <div class="collapsible-header">Remote Backends</div>
+                    <div class="collapsible-content">
+                        <ul>
+                            <li><strong>S3 Backend:</strong> Store state in S3 with DynamoDB for locking</li>
+                            <li><strong>Terraform Cloud:</strong> Managed state, collaboration features</li>
+                            <li><strong>Azure Storage / GCS:</strong> Cloud-agnostic backends</li>
+                            <li><strong>Best Practices:</strong> Enable versioning, encryption, state locking</li>
+                        </ul>
+                        <pre><code># S3 Backend Configuration
+terraform {
+  backend "s3" {
+    bucket         = "my-terraform-state"
+    key            = "prod/terraform.tfstate"
+    region         = "us-east-1"
+    encrypt        = true
+    dynamodb_table = "terraform-locks"
+  }
+}
+
+# DynamoDB table for state locking
+resource "aws_dynamodb_table" "terraform_locks" {
+  name         = "terraform-locks"
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "LockID"
+  
+  attribute {
+    name = "LockID"
+    type = "S"
+  }
+}</code></pre>
+                    </div>
+                </div>
+                
+                <h3>Modules & Reusability</h3>
+                <div class="collapsible">
+                    <div class="collapsible-header">Module Structure</div>
+                    <div class="collapsible-content">
+                        <ul>
+                            <li>Create reusable modules for common infrastructure patterns</li>
+                            <li>Use versioning for modules (Git tags, Terraform Registry)</li>
+                            <li>Document inputs/outputs clearly</li>
+                            <li>Follow module structure: variables.tf, main.tf, outputs.tf, README.md</li>
+                        </ul>
+                        <pre><code># Module structure example
+modules/
+  vpc/
+    main.tf
+    variables.tf
+    outputs.tf
+    README.md
+
+# Using a module
+module "vpc" {
+  source = "./modules/vpc"
+  
+  vpc_cidr = "10.0.0.0/16"
+  environment = "prod"
+  
+  tags = {
+    Environment = "production"
+    ManagedBy   = "Terraform"
+  }
+}</code></pre>
+                    </div>
+                </div>
+                
+                <h3>Workspaces & Environment Management</h3>
+                <div class="collapsible">
+                    <div class="collapsible-header">Workspace Strategy</div>
+                    <div class="collapsible-content">
+                        <ul>
+                            <li>Use workspaces for environment separation (dev, staging, prod)</li>
+                            <li>Alternative: Separate directories per environment</li>
+                            <li>Use terraform.tfvars for environment-specific values</li>
+                            <li>Implement proper tagging strategy</li>
+                        </ul>
+                        <pre><code># Workspace usage
+terraform workspace new dev
+terraform workspace new staging
+terraform workspace new prod
+terraform workspace select prod
+
+# Conditional resources based on workspace
+resource "aws_instance" "example" {
+  instance_type = terraform.workspace == "prod" ? "t3.large" : "t3.micro"
+  
+  tags = {
+    Environment = terraform.workspace
+  }
+}</code></pre>
+                    </div>
+                </div>
+                
+                <h3>Best Practices</h3>
+                <div class="collapsible">
+                    <div class="collapsible-header">Large-Scale Infrastructure Patterns</div>
+                    <div class="collapsible-content">
+                        <ul>
+                            <li>Use data sources to reference existing resources</li>
+                            <li>Implement proper resource dependencies</li>
+                            <li>Use count/for_each for resource replication</li>
+                            <li>Validate with terraform validate and plan</li>
+                            <li>Use terraform fmt for code consistency</li>
+                            <li>Implement policy as code (Sentinel, OPA)</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="practice-box">
+                    <h4>Practice Questions - Terraform</h4>
+                    <ol>
+                        <li>How do you manage Terraform state in a team environment?</li>
+                        <li>Explain your module design strategy for reusable infrastructure.</li>
+                        <li>How would you handle multiple environments with Terraform?</li>
+                        <li>Describe your approach to Terraform state file conflicts.</li>
+                        <li>How do you implement infrastructure testing with Terraform?</li>
+                    </ol>
+                </div>
+                
+                <div class="answer-box">
+                    <h4>Sample Answers - Terraform</h4>
+                    <ol>
+                        <li><strong>Managing Terraform State in Teams:</strong>
+                            <ul>
+                                <li>Use remote backends (S3, Terraform Cloud, Azure Storage) instead of local state</li>
+                                <li>Enable state locking with DynamoDB (for S3 backend) to prevent concurrent modifications</li>
+                                <li>Enable versioning on S3 bucket for state file history and recovery</li>
+                                <li>Use encryption at rest (S3 server-side encryption)</li>
+                                <li>Implement state file access controls via IAM policies</li>
+                                <li>Use separate state files per environment/service to reduce conflicts</li>
+                                <li>Implement CI/CD for Terraform runs to ensure consistent execution</li>
+                                <li>Use terraform state commands carefully (backup before operations)</li>
+                                <li>Document state management procedures for the team</li>
+                            </ul>
+                            <pre><code>terraform {
+  backend "s3" {
+    bucket         = "my-terraform-state-bucket"
+    key            = "prod/network/terraform.tfstate"
+    region         = "us-east-1"
+    encrypt        = true
+    dynamodb_table = "terraform-state-lock"
+  }
+}</code></pre>
+                        </li>
+                        <li><strong>Module Design Strategy:</strong>
+                            <ul>
+                                <li><strong>Single Responsibility:</strong> Each module should do one thing well (e.g., VPC module, RDS module)</li>
+                                <li><strong>Reusability:</strong> Design modules to be environment-agnostic, use variables for customization</li>
+                                <li><strong>Versioning:</strong> Use Git tags for module versions, pin versions in root modules</li>
+                                <li><strong>Structure:</strong> Standard structure (main.tf, variables.tf, outputs.tf, README.md)</li>
+                                <li><strong>Documentation:</strong> Clear variable descriptions, output documentation, usage examples</li>
+                                <li><strong>Composition:</strong> Build complex infrastructure by composing smaller modules</li>
+                                <li><strong>Testing:</strong> Test modules independently before using in production</li>
+                            </ul>
+                            <pre><code># Module structure
+modules/vpc/
+  ├── main.tf          # Resource definitions
+  ├── variables.tf     # Input variables
+  ├── outputs.tf       # Output values
+  ├── README.md        # Documentation
+  └── versions.tf      # Provider requirements
+
+# Usage
+module "vpc" {
+  source = "git::https://github.com/org/terraform-aws-vpc.git?ref=v1.2.0"
+  
+  vpc_cidr = "10.0.0.0/16"
+  environment = "prod"
+}</code></pre>
+                        </li>
+                        <li><strong>Multiple Environments:</strong>
+                            <ul>
+                                <li><strong>Workspaces Approach:</strong> Use terraform workspaces (dev, staging, prod) with same codebase</li>
+                                <li><strong>Directory Approach:</strong> Separate directories per environment (recommended for complex differences)</li>
+                                <li><strong>tfvars Files:</strong> Use environment-specific .tfvars files (dev.tfvars, prod.tfvars)</li>
+                                <li><strong>Backend Configuration:</strong> Different state files per environment</li>
+                                <li><strong>Conditional Resources:</strong> Use count/for_each based on workspace or variables</li>
+                                <li><strong>Best Practice:</strong> Use directory approach for significant differences, workspaces for similar environments</li>
+                            </ul>
+                            <pre><code># Directory structure
+environments/
+  ├── dev/
+  │   ├── main.tf
+  │   ├── terraform.tfvars
+  │   └── backend.tf
+  ├── staging/
+  └── prod/
+
+# Or using workspaces
+terraform workspace new dev
+terraform workspace select dev
+terraform apply -var-file=dev.tfvars</code></pre>
+                        </li>
+                        <li><strong>Terraform State Conflicts:</strong>
+                            <ul>
+                                <li><strong>Prevention:</strong> Use remote backends with state locking (DynamoDB)</li>
+                                <li><strong>Detection:</strong> Terraform will show error if state is locked by another process</li>
+                                <li><strong>Resolution:</strong> Wait for lock to release, or if stale lock, manually remove from DynamoDB</li>
+                                <li><strong>Best Practices:</strong> Always run terraform in CI/CD, use terraform plan before apply, implement proper locking</li>
+                                <li><strong>Manual Resolution:</strong> Use terraform state pull/push carefully, backup state before operations</li>
+                                <li><strong>Team Coordination:</strong> Communicate when making state changes, use PR reviews for infrastructure changes</li>
+                            </ul>
+                            <pre><code># If state is locked, check DynamoDB
+aws dynamodb get-item \
+  --table-name terraform-state-lock \
+  --key '{"LockID":{"S":"my-terraform-state-bucket/prod/terraform.tfstate-md5"}}'
+
+# If lock is stale, remove it (use with caution)
+aws dynamodb delete-item \
+  --table-name terraform-state-lock \
+  --key '{"LockID":{"S":"..."}}'</code></pre>
+                        </li>
+                        <li><strong>Infrastructure Testing:</strong>
+                            <ul>
+                                <li><strong>Terratest:</strong> Go-based testing framework for Terraform modules</li>
+                                <li><strong>Kitchen-Terraform:</strong> Integration testing with Test Kitchen</li>
+                                <li><strong>terraform validate:</strong> Syntax and configuration validation</li>
+                                <li><strong>terraform plan:</strong> Dry-run to see changes before applying</li>
+                                <li><strong>Policy as Code:</strong> Use Sentinel (Terraform Cloud) or OPA for policy enforcement</li>
+                                <li><strong>Compliance Testing:</strong> Use tools like Checkov, tfsec for security scanning</li>
+                                <li><strong>Integration Tests:</strong> Deploy to test environment, run tests, destroy</li>
+                            </ul>
+                            <pre><code># Example: Terratest
+package test
+
+import (
+    "testing"
+    "github.com/gruntwork-io/terratest/modules/terraform"
+    "github.com/stretchr/testify/assert"
+)
+
+func TestTerraformVPC(t *testing.T) {
+    terraformOptions := &terraform.Options{
+        TerraformDir: "../modules/vpc",
+    }
+    
+    defer terraform.Destroy(t, terraformOptions)
+    terraform.InitAndApply(t, terraformOptions)
+    
+    vpcId := terraform.Output(t, terraformOptions, "vpc_id")
+    assert.NotEmpty(t, vpcId)
+}</code></pre>
+                        </li>
+                    </ol>
+                </div>
+            </section>
+            
+            <section id="documentation">
+                <h2>Documentation & Playbooks</h2>
+                
+                <h3>Playbook Structure</h3>
+                <div class="collapsible">
+                    <div class="collapsible-header">Essential Components</div>
+                    <div class="collapsible-content">
+                        <ul>
+                            <li><strong>Title & Purpose:</strong> Clear objective and scope</li>
+                            <li><strong>Prerequisites:</strong> Required access, tools, knowledge</li>
+                            <li><strong>Step-by-step Procedures:</strong> Numbered, clear instructions</li>
+                            <li><strong>Troubleshooting:</strong> Common issues and solutions</li>
+                            <li><strong>Rollback Procedures:</strong> How to undo changes</li>
+                            <li><strong>References:</strong> Related docs, runbooks, contacts</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <h3>Playbook Template</h3>
+                <pre><code># Deployment Playbook Template
+
+## Title: Application Deployment to Production
+
+### Purpose
+Deploy application version X.Y.Z to production environment
+
+### Prerequisites
+- AWS CLI configured with production credentials
+- Access to Jenkins deployment pipeline
+- Terraform state access
+- Approval from change management
+
+### Pre-Deployment Checklist
+- [ ] Code review completed
+- [ ] Tests passing in staging
+- [ ] Backup of current production state
+- [ ] Rollback plan documented
+- [ ] Team notified of deployment window
+
+### Deployment Steps
+
+#### 1. Pre-Deployment Validation
+```bash
+# Verify staging deployment
+curl https://staging.example.com/health
+
+# Check infrastructure state
+terraform workspace select staging
+terraform plan
+```
+
+#### 2. Production Deployment
+```bash
+# Run Jenkins deployment job
+# Job: deploy-production
+# Parameters: VERSION=X.Y.Z
+```
+
+#### 3. Post-Deployment Verification
+- [ ] Health checks passing
+- [ ] Application logs clean
+- [ ] Metrics within normal range
+- [ ] User acceptance testing
+
+### Rollback Procedure
+1. Identify last known good version
+2. Revert infrastructure if needed: `terraform apply -target=module.app`
+3. Redeploy previous application version
+4. Verify system stability
+
+### Troubleshooting
+| Issue | Symptom | Solution |
+|-------|---------|----------|
+| Deployment timeout | Pipeline stuck | Check Jenkins agent, restart if needed |
+| Health check failure | 503 errors | Review application logs, check dependencies |
+| Database migration error | App crashes | Rollback migration, investigate schema |
+
+### Contacts
+- On-call Engineer: [Contact]
+- DevOps Lead: [Contact]
+- Database Team: [Contact]
+</code></pre>
+                
+                <h3>Runbooks for Common Operations</h3>
+                <div class="collapsible">
+                    <div class="collapsible-header">Incident Response Runbook</div>
+                    <div class="collapsible-content">
+                        <ul>
+                            <li><strong>Detection:</strong> Monitoring alerts, user reports</li>
+                            <li><strong>Assessment:</strong> Severity classification, impact analysis</li>
+                            <li><strong>Response:</strong> Immediate actions, escalation procedures</li>
+                            <li><strong>Resolution:</strong> Root cause analysis, fix implementation</li>
+                            <li><strong>Post-mortem:</strong> Documentation, improvement actions</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="key-point">
+                    <h4>Documentation Best Practices</h4>
+                    <ul>
+                        <li>Keep documentation up-to-date with code changes</li>
+                        <li>Use version control for documentation</li>
+                        <li>Include diagrams for complex architectures</li>
+                        <li>Write for your audience (technical level appropriate)</li>
+                        <li>Review and update regularly</li>
+                        <li>Make it searchable and easily accessible</li>
+                    </ul>
+                </div>
+                
+                <div class="practice-box">
+                    <h4>Practice Questions - Documentation</h4>
+                    <ol>
+                        <li>Describe the structure of an effective deployment playbook.</li>
+                        <li>How do you ensure documentation stays current?</li>
+                        <li>What information should be included in an incident runbook?</li>
+                        <li>How do you balance detail vs. clarity in technical documentation?</li>
+                        <li>Describe your approach to knowledge transfer through documentation.</li>
+                    </ol>
+                </div>
+                
+                <div class="answer-box">
+                    <h4>Sample Answers - Documentation</h4>
+                    <ol>
+                        <li><strong>Effective Deployment Playbook Structure:</strong>
+                            <ul>
+                                <li><strong>Title & Purpose:</strong> Clear objective, what is being deployed and why</li>
+                                <li><strong>Prerequisites:</strong> Required access, tools, permissions, dependencies</li>
+                                <li><strong>Pre-Deployment Checklist:</strong> Code review, testing, backups, approvals</li>
+                                <li><strong>Deployment Steps:</strong> Numbered, sequential steps with expected outcomes</li>
+                                <li><strong>Verification Steps:</strong> How to verify successful deployment (health checks, smoke tests)</li>
+                                <li><strong>Rollback Procedure:</strong> Clear steps to revert if deployment fails</li>
+                                <li><strong>Troubleshooting:</strong> Common issues and solutions</li>
+                                <li><strong>Contacts & Escalation:</strong> Who to contact for issues</li>
+                                <li><strong>Post-Deployment:</strong> Monitoring, validation, cleanup tasks</li>
+                            </ul>
+                        </li>
+                        <li><strong>Keeping Documentation Current:</strong>
+                            <ul>
+                                <li><strong>Version Control:</strong> Store documentation in Git alongside code</li>
+                                <li><strong>Documentation Reviews:</strong> Include doc updates in code review process</li>
+                                <li><strong>Automated Checks:</strong> Link documentation to code, flag outdated docs</li>
+                                <li><strong>Regular Audits:</strong> Quarterly reviews of all documentation</li>
+                                <li><strong>Ownership:</strong> Assign documentation owners, include in team responsibilities</li>
+                                <li><strong>Feedback Loop:</strong> Encourage team to report outdated documentation</li>
+                                <li><strong>Update Triggers:</strong> Update docs when code changes, during incident post-mortems</li>
+                                <li><strong>Documentation as Code:</strong> Treat docs like code - review, test, version</li>
+                            </ul>
+                        </li>
+                        <li><strong>Incident Runbook Contents:</strong>
+                            <ul>
+                                <li><strong>Detection:</strong> How the issue is detected (alerts, monitoring, user reports)</li>
+                                <li><strong>Initial Assessment:</strong> Severity classification, impact analysis, affected systems</li>
+                                <li><strong>Immediate Actions:</strong> First response steps, containment procedures</li>
+                                <li><strong>Diagnosis Steps:</strong> How to identify root cause (logs, metrics, commands)</li>
+                                <li><strong>Resolution Steps:</strong> Step-by-step fix procedures</li>
+                                <li><strong>Verification:</strong> How to confirm issue is resolved</li>
+                                <li><strong>Escalation Path:</strong> When and who to escalate to</li>
+                                <li><strong>Communication:</strong> Stakeholder notification procedures</li>
+                                <li><strong>Post-Incident:</strong> Post-mortem process, documentation updates</li>
+                            </ul>
+                        </li>
+                        <li><strong>Balancing Detail vs. Clarity:</strong>
+                            <ul>
+                                <li><strong>Know Your Audience:</strong> Tailor detail level to reader's expertise</li>
+                                <li><strong>Layered Documentation:</strong> High-level overview, then detailed sections</li>
+                                <li><strong>Use Examples:</strong> Concrete examples clarify abstract concepts</li>
+                                <li><strong>Visual Aids:</strong> Diagrams, flowcharts for complex processes</li>
+                                <li><strong>Clear Structure:</strong> Use headings, bullet points, numbered lists</li>
+                                <li><strong>Avoid Jargon:</strong> Define acronyms and technical terms</li>
+                                <li><strong>Quick Reference:</strong> Provide TL;DR sections for quick lookup</li>
+                                <li><strong>Progressive Disclosure:</strong> Start simple, link to detailed docs</li>
+                            </ul>
+                        </li>
+                        <li><strong>Knowledge Transfer Through Documentation:</strong>
+                            <ul>
+                                <li><strong>Onboarding Guides:</strong> Step-by-step setup for new team members</li>
+                                <li><strong>Architecture Documentation:</strong> System design, data flows, component interactions</li>
+                                <li><strong>Decision Records:</strong> Document why decisions were made (ADR - Architecture Decision Records)</li>
+                                <li><strong>Runbooks:</strong> Operational procedures for common tasks</li>
+                                <li><strong>Video Tutorials:</strong> Record complex procedures for visual learners</li>
+                                <li><strong>Pair Programming Notes:</strong> Document learnings from pairing sessions</li>
+                                <li><strong>Regular Updates:</strong> Keep documentation current with system changes</li>
+                                <li><strong>Accessibility:</strong> Make docs easily searchable and accessible to all team members</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+            </section>
+            
+            <section id="product">
+                <h2>Product Understanding & Integration</h2>
+                
+                <h3>Understanding Product Architecture</h3>
+                <div class="collapsible">
+                    <div class="collapsible-header">Key Areas to Understand</div>
+                    <div class="collapsible-content">
+                        <ul>
+                            <li><strong>Application Architecture:</strong> Components, dependencies, data flow</li>
+                            <li><strong>Infrastructure Requirements:</strong> Compute, storage, networking needs</li>
+                            <li><strong>Performance Characteristics:</strong> Latency, throughput, scalability</li>
+                            <li><strong>Business Logic:</strong> How features work, user workflows</li>
+                            <li><strong>Integration Points:</strong> APIs, databases, external services</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <h3>Aligning DevOps with Product Requirements</h3>
+                <div class="collapsible">
+                    <div class="collapsible-header">Collaboration Strategies</div>
+                    <div class="collapsible-content">
+                        <ul>
+                            <li>Participate in product planning and architecture reviews</li>
+                            <li>Provide infrastructure recommendations early</li>
+                            <li>Understand release cycles and feature priorities</li>
+                            <li>Balance technical debt with feature delivery</li>
+                            <li>Communicate infrastructure constraints and opportunities</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <h3>Stakeholder Communication</h3>
+                <div class="collapsible">
+                    <div class="collapsible-header">Effective Communication</div>
+                    <div class="collapsible-content">
+                        <ul>
+                            <li>Translate technical concepts to business impact</li>
+                            <li>Provide clear timelines and dependencies</li>
+                            <li>Regular status updates and demos</li>
+                            <li>Document decisions and rationale</li>
+                            <li>Escalate blockers proactively</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <h3>Balancing Speed vs Stability</h3>
+                <div class="collapsible">
+                    <div class="collapsible-header">Strategies</div>
+                    <div class="collapsible-content">
+                        <ul>
+                            <li>Implement feature flags for gradual rollouts</li>
+                            <li>Use canary deployments for risk mitigation</li>
+                            <li>Automate testing to catch issues early</li>
+                            <li>Maintain staging environments that mirror production</li>
+                            <li>Establish SLAs and SLOs with product teams</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="practice-box">
+                    <h4>Practice Questions - Product Understanding</h4>
+                    <ol>
+                        <li>How do you ensure DevOps practices align with product goals?</li>
+                        <li>Describe a time you had to balance speed and stability.</li>
+                        <li>How do you communicate technical constraints to product teams?</li>
+                        <li>What's your approach to understanding a new product's architecture?</li>
+                        <li>How do you prioritize infrastructure work vs. feature delivery?</li>
+                    </ol>
+                </div>
+                
+                <div class="answer-box">
+                    <h4>Sample Answers - Product Understanding</h4>
+                    <ol>
+                        <li><strong>Aligning DevOps with Product Goals:</strong>
+                            <ul>
+                                <li><strong>Early Involvement:</strong> Participate in product planning and architecture discussions</li>
+                                <li><strong>Understand Business Objectives:</strong> Know what the product is trying to achieve, user needs</li>
+                                <li><strong>Provide Infrastructure Guidance:</strong> Suggest scalable, cost-effective solutions early</li>
+                                <li><strong>Measure What Matters:</strong> Align metrics with product success (deployment frequency, MTTR, availability)</li>
+                                <li><strong>Continuous Communication:</strong> Regular syncs with product and engineering teams</li>
+                                <li><strong>Balance Trade-offs:</strong> Help teams understand speed vs. stability, cost vs. performance</li>
+                                <li><strong>Enable Product Velocity:</strong> Automate processes to reduce friction in delivery</li>
+                            </ul>
+                        </li>
+                        <li><strong>Balancing Speed and Stability (STAR Example):</strong>
+                            <ul>
+                                <li><strong>Situation:</strong> Product team needed to release a critical feature for a major client deadline, but infrastructure changes were required that could impact stability</li>
+                                <li><strong>Task:</strong> Deliver the feature on time while maintaining system reliability</li>
+                                <li><strong>Action:</strong>
+                                    <ul>
+                                        <li>Implemented feature flags to enable gradual rollout</li>
+                                        <li>Set up canary deployment for the new infrastructure components</li>
+                                        <li>Enhanced monitoring and alerting for the new feature</li>
+                                        <li>Created rollback procedures and tested them</li>
+                                        <li>Deployed to 10% of traffic first, monitored for 24 hours, then gradually increased</li>
+                                    </ul>
+                                </li>
+                                <li><strong>Result:</strong> Feature was delivered on time, zero downtime, and we established a pattern for future rapid deployments</li>
+                            </ul>
+                        </li>
+                        <li><strong>Communicating Technical Constraints:</strong>
+                            <ul>
+                                <li><strong>Translate to Business Impact:</strong> Explain constraints in terms of cost, time, risk, or capability</li>
+                                <li><strong>Provide Alternatives:</strong> Don't just say "no" - offer solutions or workarounds</li>
+                                <li><strong>Use Examples:</strong> Reference similar situations and outcomes</li>
+                                <li><strong>Timeline Context:</strong> Explain what's needed and how long it takes</li>
+                                <li><strong>Risk Communication:</strong> Clearly explain risks of bypassing constraints</li>
+                                <li><strong>Collaborative Approach:</strong> Work together to find solutions that meet both technical and product needs</li>
+                                <li><strong>Document Decisions:</strong> Record why constraints exist and what was decided</li>
+                            </ul>
+                            <p><strong>Example:</strong> "The current infrastructure can't handle 10x traffic spike. We have two options: 1) Scale up infrastructure (2 weeks, $X cost) or 2) Implement auto-scaling with gradual rollout (1 week, lower cost, better long-term). Option 2 also reduces risk of over-provisioning."</p>
+                        </li>
+                        <li><strong>Understanding New Product Architecture:</strong>
+                            <ul>
+                                <li><strong>Start with Documentation:</strong> Read existing architecture docs, ADRs, design documents</li>
+                                <li><strong>Review Code/Infrastructure:</strong> Examine Terraform configs, deployment scripts, CI/CD pipelines</li>
+                                <li><strong>Ask Questions:</strong> Schedule time with product and engineering leads to understand:
+                                    <ul>
+                                        <li>System components and their interactions</li>
+                                        <li>Data flow and dependencies</li>
+                                        <li>Performance characteristics and bottlenecks</li>
+                                        <li>Current pain points and challenges</li>
+                                    </ul>
+                                </li>
+                                <li><strong>Diagram the System:</strong> Create your own architecture diagrams to verify understanding</li>
+                                <li><strong>Review Monitoring:</strong> Examine dashboards, metrics, logs to understand runtime behavior</li>
+                                <li><strong>Shadow Operations:</strong> Observe on-call rotations, deployments, incidents</li>
+                                <li><strong>Incremental Learning:</strong> Start with high-level, then dive into specific areas</li>
+                            </ul>
+                        </li>
+                        <li><strong>Prioritizing Infrastructure vs. Features:</strong>
+                            <ul>
+                                <li><strong>Risk-Based Approach:</strong> Prioritize infrastructure work that prevents incidents or security issues</li>
+                                <li><strong>Impact Assessment:</strong> Evaluate how infrastructure work enables or blocks features</li>
+                                <li><strong>Technical Debt Management:</strong> Balance paying down debt with new feature work</li>
+                                <li><strong>Stakeholder Alignment:</strong> Work with product to understand feature dependencies</li>
+                                <li><strong>Incremental Improvements:</strong> Break infrastructure work into smaller, deliverable chunks</li>
+                                <li><strong>Measure Impact:</strong> Track how infrastructure improvements affect feature delivery speed</li>
+                                <li><strong>Communication:</strong> Clearly explain why infrastructure work is needed and its benefits</li>
+                                <li><strong>Example Framework:</strong> 70% feature work, 20% infrastructure improvements, 10% innovation/exploration</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+            </section>
+            
+            <section id="additional">
+                <h2>Additional Topics (Preferred Qualifications)</h2>
+                
+                <h3>Containerization</h3>
+                <div class="collapsible">
+                    <div class="collapsible-header">Docker & Kubernetes</div>
+                    <div class="collapsible-content">
+                        <ul>
+                            <li><strong>Docker:</strong> Containerization, multi-stage builds, best practices</li>
+                            <li><strong>Kubernetes:</strong> Pods, services, deployments, ingress</li>
+                            <li><strong>Orchestration:</strong> EKS, ECS, self-managed K8s</li>
+                            <li><strong>Best Practices:</strong> Image optimization, security scanning, resource limits</li>
+                        </ul>
+                        <pre><code># Dockerfile best practices
+FROM node:18-alpine AS builder
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --only=production
+
+FROM node:18-alpine
+WORKDIR /app
+COPY --from=builder /app/node_modules ./node_modules
+COPY . .
+EXPOSE 3000
+USER node
+CMD ["node", "server.js"]</code></pre>
+                    </div>
+                </div>
+                
+                <h3>Monitoring Tools</h3>
+                <div class="collapsible">
+                    <div class="collapsible-header">Prometheus, Grafana, CloudWatch</div>
+                    <div class="collapsible-content">
+                        <ul>
+                            <li><strong>Prometheus:</strong> Metrics collection, alerting rules, service discovery</li>
+                            <li><strong>Grafana:</strong> Visualization, dashboards, alerting</li>
+                            <li><strong>CloudWatch:</strong> AWS-native monitoring, logs, alarms, dashboards</li>
+                            <li><strong>Integration:</strong> Use all three for comprehensive observability</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <h3>Security Best Practices</h3>
+                <div class="collapsible">
+                    <div class="collapsible-header">Cloud Security</div>
+                    <div class="collapsible-content">
+                        <ul>
+                            <li><strong>IAM:</strong> Least privilege, role-based access, MFA</li>
+                            <li><strong>Network Security:</strong> VPC, security groups, NACLs, WAF</li>
+                            <li><strong>Secrets Management:</strong> AWS Secrets Manager, Parameter Store, KMS</li>
+                            <li><strong>Compliance:</strong> Regular audits, encryption at rest/transit</li>
+                            <li><strong>Vulnerability Scanning:</strong> Container images, infrastructure scanning</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="practice">
+                <h2>Interview Practice Questions</h2>
+                
+                <h3>Behavioral Questions (9 Years Experience)</h3>
+                <div class="practice-box">
+                    <h4>Common Questions</h4>
+                    <ol>
+                        <li>Tell me about a time you led a major infrastructure migration.</li>
+                        <li>Describe a challenging production incident and how you resolved it.</li>
+                        <li>How do you handle conflicting priorities between teams?</li>
+                        <li>Give an example of how you've mentored junior team members.</li>
+                        <li>Describe a time you had to make a difficult technical decision.</li>
+                    </ol>
+                    <p><strong>STAR Method:</strong> Situation → Task → Action → Result</p>
+                </div>
+                
+                <div class="answer-box">
+                    <h4>Sample Answers - Behavioral Questions</h4>
+                    <ol>
+                        <li><strong>Major Infrastructure Migration (STAR):</strong>
+                            <ul>
+                                <li><strong>Situation:</strong> Company needed to migrate from on-premises infrastructure to AWS to improve scalability and reduce costs. 50+ applications, 200+ servers, critical business systems.</li>
+                                <li><strong>Task:</strong> Lead the migration project, ensure zero downtime, maintain business continuity, complete within 6 months.</li>
+                                <li><strong>Action:</strong>
+                                    <ul>
+                                        <li>Created migration strategy: lift-and-shift for simple apps, re-architect for complex ones</li>
+                                        <li>Built proof-of-concept in AWS, validated approach with pilot applications</li>
+                                        <li>Established migration playbook with detailed runbooks for each application type</li>
+                                        <li>Set up CI/CD pipelines for automated deployments</li>
+                                        <li>Coordinated with application teams for testing and validation</li>
+                                        <li>Implemented monitoring and rollback procedures</li>
+                                        <li>Used phased approach: non-critical apps first, then critical systems</li>
+                                    </ul>
+                                </li>
+                                <li><strong>Result:</strong> Completed migration 2 weeks ahead of schedule, 40% cost reduction, zero critical incidents, improved deployment speed by 60%</li>
+                            </ul>
+                        </li>
+                        <li><strong>Challenging Production Incident (STAR):</strong>
+                            <ul>
+                                <li><strong>Situation:</strong> E-commerce site went down during Black Friday sale, affecting revenue and customer experience.</li>
+                                <li><strong>Task:</strong> Quickly identify root cause and restore service while minimizing impact.</li>
+                                <li><strong>Action:</strong>
+                                    <ul>
+                                        <li>Immediately assembled incident response team</li>
+                                        <li>Checked CloudWatch metrics - identified database connection pool exhaustion</li>
+                                        <li>Traced to recent deployment that changed connection handling</li>
+                                        <li>Rolled back deployment while investigating</li>
+                                        <li>Identified bug in connection pooling logic</li>
+                                        <li>Fixed and deployed hotfix with enhanced monitoring</li>
+                                        <li>Communicated status updates to stakeholders every 15 minutes</li>
+                                    </ul>
+                                </li>
+                                <li><strong>Result:</strong> Service restored in 45 minutes, implemented better pre-deployment checks, created runbook for similar incidents</li>
+                            </ul>
+                        </li>
+                        <li><strong>Conflicting Priorities:</strong>
+                            <ul>
+                                <li>Listen to both teams to understand their needs and constraints</li>
+                                <li>Assess business impact and urgency of each request</li>
+                                <li>Find common ground or propose compromise solutions</li>
+                                <li>Escalate to management if needed, with clear recommendation</li>
+                                <li>Communicate decisions transparently with rationale</li>
+                                <li><strong>Example:</strong> Product team needed feature deployment, but security team required urgent patching. Proposed deploying patch first (30 min), then feature (already tested), both completed same day.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Mentoring Example (STAR):</strong>
+                            <ul>
+                                <li><strong>Situation:</strong> New junior DevOps engineer joined team, strong in development but limited cloud/infrastructure experience</li>
+                                <li><strong>Task:</strong> Help them become productive and confident in DevOps practices</li>
+                                <li><strong>Action:</strong>
+                                    <ul>
+                                        <li>Created 30-60-90 day learning plan with specific goals</li>
+                                        <li>Paired on real projects (Terraform modules, Jenkins pipelines)</li>
+                                        <li>Conducted weekly 1-on-1s to answer questions and provide feedback</li>
+                                        <li>Assigned progressively complex tasks with support</li>
+                                        <li>Shared resources (documentation, best practices, tools)</li>
+                                        <li>Encouraged them to lead a small project after 3 months</li>
+                                    </ul>
+                                </li>
+                                <li><strong>Result:</strong> Engineer became independent contributor within 6 months, successfully led infrastructure project, now mentors other junior engineers</li>
+                            </ul>
+                        </li>
+                        <li><strong>Difficult Technical Decision (STAR):</strong>
+                            <ul>
+                                <li><strong>Situation:</strong> Needed to choose between rebuilding legacy system vs. migrating to new platform. Team was split on approach.</li>
+                                <li><strong>Task:</strong> Make decision that balances technical debt, business needs, and team capacity</li>
+                                <li><strong>Action:</strong>
+                                    <ul>
+                                        <li>Analyzed both options: cost, time, risk, long-term maintenance</li>
+                                        <li>Consulted with stakeholders (product, engineering, business)</li>
+                                        <li>Created proof-of-concept for migration approach</li>
+                                        <li>Presented analysis to team with recommendation</li>
+                                        <li>Chose migration with phased approach to reduce risk</li>
+                                    </ul>
+                                </li>
+                                <li><strong>Result:</strong> Migration completed successfully, reduced maintenance burden by 50%, team aligned on decision process</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+                
+                <h3>Technical Scenario Questions</h3>
+                <div class="practice-box">
+                    <h4>Architecture & Design</h4>
+                    <ol>
+                        <li>Design a highly available web application on AWS with disaster recovery.</li>
+                        <li>How would you implement CI/CD for a microservices architecture?</li>
+                        <li>Design a cost-optimized infrastructure for a startup with variable traffic.</li>
+                        <li>How would you secure a multi-account AWS environment?</li>
+                        <li>Design a monitoring and alerting strategy for a distributed system.</li>
+                    </ol>
+                </div>
+                
+                <div class="answer-box">
+                    <h4>Sample Answers - Architecture & Design</h4>
+                    <ol>
+                        <li><strong>Highly Available Web Application with DR:</strong>
+                            <ul>
+                                <li><strong>Multi-AZ Deployment:</strong> Deploy across at least 2 availability zones in primary region</li>
+                                <li><strong>Load Balancing:</strong> Application Load Balancer with health checks, auto-scaling groups</li>
+                                <li><strong>Compute:</strong> Auto Scaling Groups with min/max/desired capacity, use multiple instance types</li>
+                                <li><strong>Database:</strong> RDS Multi-AZ with automated backups, read replicas in secondary region</li>
+                                <li><strong>Storage:</strong> S3 with cross-region replication for disaster recovery</li>
+                                <li><strong>CDN:</strong> CloudFront for static content, reduce origin load</li>
+                                <li><strong>Disaster Recovery:</strong> 
+                                    <ul>
+                                        <li>Backup and restore strategy (RTO: 4 hours, RPO: 1 hour)</li>
+                                        <li>Pilot light: Minimal resources in DR region, scale up on failover</li>
+                                        <li>Automated failover using Route 53 health checks</li>
+                                        <li>Regular DR drills to test procedures</li>
+                                    </ul>
+                                </li>
+                                <li><strong>Monitoring:</strong> CloudWatch alarms, SNS notifications, automated remediation</li>
+                            </ul>
+                        </li>
+                        <li><strong>CI/CD for Microservices:</strong>
+                            <ul>
+                                <li><strong>Multi-Branch Pipelines:</strong> Each service has its own Jenkinsfile in its repository</li>
+                                <li><strong>Shared Libraries:</strong> Common pipeline steps (build, test, deploy) in shared library</li>
+                                <li><strong>Parallel Execution:</strong> Build and test services in parallel where possible</li>
+                                <li><strong>Service-Specific Configs:</strong> Each service defines its own build/test/deploy steps</li>
+                                <li><strong>Container Registry:</strong> Push Docker images to ECR, tag with version and commit SHA</li>
+                                <li><strong>Deployment Strategy:</strong> Blue-green or canary deployments per service</li>
+                                <li><strong>Integration Testing:</strong> Deploy to staging, run integration/E2E tests</li>
+                                <li><strong>Service Mesh:</strong> Use Istio/Linkerd for service communication and traffic management</li>
+                                <li><strong>Feature Flags:</strong> Enable gradual feature rollouts</li>
+                            </ul>
+                        </li>
+                        <li><strong>Cost-Optimized Startup Infrastructure:</strong>
+                            <ul>
+                                <li><strong>Serverless First:</strong> Use Lambda, API Gateway, DynamoDB for variable workloads</li>
+                                <li><strong>Auto Scaling:</strong> Start small, scale based on demand (min: 1-2 instances)</li>
+                                <li><strong>Spot Instances:</strong> Use for dev/test, batch processing, CI/CD agents</li>
+                                <li><strong>Reserved Instances:</strong> Only for predictable baseline capacity (after 3-6 months)</li>
+                                <li><strong>S3 Lifecycle Policies:</strong> Automatically move to cheaper storage classes</li>
+                                <li><strong>CloudFront:</strong> Reduce origin costs and improve performance</li>
+                                <li><strong>Right-Sizing:</strong> Start with smaller instances, monitor and adjust</li>
+                                <li><strong>Cost Monitoring:</strong> Set up budgets and alerts, tag all resources</li>
+                                <li><strong>Schedule Non-Prod:</strong> Stop dev/test environments during off-hours</li>
+                            </ul>
+                        </li>
+                        <li><strong>Securing Multi-Account AWS Environment:</strong>
+                            <ul>
+                                <li><strong>AWS Organizations:</strong> Centralized management, SCPs (Service Control Policies)</li>
+                                <li><strong>Account Structure:</strong> Separate accounts for prod, staging, dev, shared services, security</li>
+                                <li><strong>IAM:</strong> Least privilege, role-based access, MFA required, no root account usage</li>
+                                <li><strong>Network Security:</strong> VPCs with private subnets, security groups, NACLs, VPC peering/transit gateway</li>
+                                <li><strong>Secrets Management:</strong> AWS Secrets Manager, Parameter Store, KMS for encryption</li>
+                                <li><strong>Compliance:</strong> AWS Config for compliance monitoring, CloudTrail for audit logs</li>
+                                <li><strong>GuardDuty:</strong> Threat detection across accounts</li>
+                                <li><strong>WAF:</strong> Web application firewall for public-facing applications</li>
+                                <li><strong>Centralized Logging:</strong> CloudWatch Logs Insights, S3 for long-term storage</li>
+                            </ul>
+                        </li>
+                        <li><strong>Monitoring and Alerting Strategy:</strong>
+                            <ul>
+                                <li><strong>Metrics Collection:</strong> CloudWatch for AWS services, Prometheus for application metrics</li>
+                                <li><strong>Logging:</strong> Centralized logging (CloudWatch Logs, ELK stack), structured logging</li>
+                                <li><strong>Dashboards:</strong> Grafana for visualization, CloudWatch dashboards</li>
+                                <li><strong>Alerting:</strong> 
+                                    <ul>
+                                        <li>Critical: PagerDuty/OpsGenie for on-call</li>
+                                        <li>Warning: Slack/email notifications</li>
+                                        <li>Info: Dashboard visibility</li>
+                                    </ul>
+                                </li>
+                                <li><strong>Key Metrics:</strong> Availability, latency, error rate, throughput, resource utilization</li>
+                                <li><strong>Distributed Tracing:</strong> AWS X-Ray or Jaeger for request tracing across services</li>
+                                <li><strong>Synthetic Monitoring:</strong> CloudWatch Synthetics for proactive issue detection</li>
+                                <li><strong>Alert Tuning:</strong> Reduce noise, focus on actionable alerts, use alerting hierarchies</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+                
+                <div class="practice-box">
+                    <h4>Troubleshooting Scenarios</h4>
+                    <ol>
+                        <li>Application is slow after deployment. How do you investigate?</li>
+                        <li>Jenkins pipeline is failing intermittently. What's your approach?</li>
+                        <li>Costs have increased 50% this month. How do you identify the cause?</li>
+                        <li>Terraform apply is failing due to state conflicts. How do you resolve?</li>
+                        <li>Production database connection issues. Walk through your debugging process.</li>
+                    </ol>
+                </div>
+                
+                <div class="answer-box">
+                    <h4>Sample Answers - Troubleshooting Scenarios</h4>
+                    <ol>
+                        <li><strong>Slow Application After Deployment:</strong>
+                            <ol>
+                                <li><strong>Check Deployment Changes:</strong> Review what changed in the deployment (code, config, infrastructure)</li>
+                                <li><strong>Monitor Metrics:</strong> Check CloudWatch/APM for CPU, memory, latency, error rates</li>
+                                <li><strong>Review Logs:</strong> Check application logs for errors, warnings, slow queries</li>
+                                <li><strong>Database Performance:</strong> Check RDS performance insights, slow query logs, connection pool status</li>
+                                <li><strong>Resource Utilization:</strong> Verify instance sizes, check if resources are maxed out</li>
+                                <li><strong>Network Issues:</strong> Check network latency, packet loss, DNS resolution</li>
+                                <li><strong>Compare with Baseline:</strong> Compare current metrics with pre-deployment baseline</li>
+                                <li><strong>Rollback if Critical:</strong> If severe impact, rollback deployment while investigating</li>
+                                <li><strong>Common Causes:</strong> Memory leaks, database connection issues, misconfigured auto-scaling, code performance regression</li>
+                            </ol>
+                        </li>
+                        <li><strong>Intermittent Jenkins Pipeline Failures:</strong>
+                            <ol>
+                                <li><strong>Review Build History:</strong> Identify pattern (specific stages, times, agents)</li>
+                                <li><strong>Check Logs:</strong> Review console output for error messages, stack traces</li>
+                                <li><strong>Agent Health:</strong> Check Jenkins agent status, disk space, memory, connectivity</li>
+                                <li><strong>Resource Contention:</strong> Check if multiple builds running simultaneously causing conflicts</li>
+                                <li><strong>External Dependencies:</strong> Verify external services (Git, Docker registry, AWS) are accessible</li>
+                                <li><strong>Timing Issues:</strong> Check for race conditions, timeouts, network latency</li>
+                                <li><strong>Plugin Issues:</strong> Review plugin versions, check for known issues</li>
+                                <li><strong>Test Isolation:</strong> Ensure tests don't interfere with each other</li>
+                                <li><strong>Solution:</strong> Add retry logic, increase timeouts, fix resource leaks, isolate test environments</li>
+                            </ol>
+                        </li>
+                        <li><strong>Identifying Cost Increase:</strong>
+                            <ol>
+                                <li><strong>Cost Explorer:</strong> Use AWS Cost Explorer to see cost breakdown by service, account, region</li>
+                                <li><strong>Cost Anomaly Detection:</strong> Check AWS Cost Anomaly Detection alerts</li>
+                                <li><strong>Tag Analysis:</strong> Review costs by tags (Environment, Project, Team) to identify source</li>
+                                <li><strong>Time-Based Analysis:</strong> Compare current month with previous months, identify when spike started</li>
+                                <li><strong>Service-Level Drill-Down:</strong> Identify which AWS service costs increased (EC2, S3, Data Transfer, etc.)</li>
+                                <li><strong>Resource Inventory:</strong> List all resources, identify orphaned or oversized resources</li>
+                                <li><strong>Check Recent Changes:</strong> Review recent deployments, infrastructure changes, new services</li>
+                                <li><strong>Common Causes:</strong> Leftover test resources, increased traffic, misconfigured auto-scaling, data transfer costs, new services</li>
+                                <li><strong>Remediation:</strong> Terminate unused resources, right-size instances, implement cost controls</li>
+                            </ol>
+                        </li>
+                        <li><strong>Terraform State Conflicts:</strong>
+                            <ol>
+                                <li><strong>Check Lock Status:</strong> Verify if state is locked in DynamoDB (for S3 backend)</li>
+                                <li><strong>Identify Lock Owner:</strong> Check who/what has the lock (another team member, CI/CD pipeline)</li>
+                                <li><strong>Wait for Release:</strong> If legitimate lock, wait for current operation to complete</li>
+                                <li><strong>Stale Lock:</strong> If lock is stale (process crashed), verify no active operations, then remove lock</li>
+                                <li><strong>State File Conflicts:</strong> If state files diverged, use terraform state pull to compare, then merge carefully</li>
+                                <li><strong>Prevention:</strong> Always use remote backend with locking, run Terraform in CI/CD, communicate state changes</li>
+                                <li><strong>Recovery:</strong> If state corrupted, restore from backup (S3 versioning), or use terraform import to rebuild state</li>
+                            </ol>
+                            <pre><code># Check lock
+aws dynamodb get-item --table-name terraform-locks \
+  --key '{"LockID":{"S":"bucket/path/terraform.tfstate-md5"}}'
+
+# Remove stale lock (use with caution)
+aws dynamodb delete-item --table-name terraform-locks \
+  --key '{"LockID":{"S":"..."}}'</code></pre>
+                        </li>
+                        <li><strong>Database Connection Issues - Debugging Process:</strong>
+                            <ol>
+                                <li><strong>Verify Symptoms:</strong> Check error messages (timeout, connection refused, too many connections)</li>
+                                <li><strong>Database Status:</strong> Check RDS status in AWS console, CloudWatch metrics (CPU, connections, freeable memory)</li>
+                                <li><strong>Connection Pool:</strong> Review application connection pool settings, current connections vs. max</li>
+                                <li><strong>Security Groups:</strong> Verify security group rules allow connections from application subnets</li>
+                                <li><strong>Network Connectivity:</strong> Test connectivity from application servers (telnet, nc, or application-level test)</li>
+                                <li><strong>Database Logs:</strong> Check RDS logs for errors, slow queries, connection issues</li>
+                                <li><strong>Performance Insights:</strong> Use RDS Performance Insights to identify bottlenecks</li>
+                                <li><strong>Recent Changes:</strong> Check for recent deployments, configuration changes, scaling events</li>
+                                <li><strong>Connection Leaks:</strong> Check for unclosed connections in application code</li>
+                                <li><strong>Capacity Issues:</strong> Verify instance size, connection limits, consider read replicas</li>
+                                <li><strong>Resolution:</strong> Fix root cause (code fix, scale up, connection pool tuning, security group update)</li>
+                            </ol>
+                        </li>
+                    </ol>
+                </div>
+                
+                <h3>Key Talking Points</h3>
+                <div class="key-point">
+                    <h4>Highlight Your Experience</h4>
+                    <ul>
+                        <li><strong>Cost Optimization:</strong> Specific examples of cost savings achieved</li>
+                        <li><strong>Automation:</strong> Scripts/tools you've created, time saved</li>
+                        <li><strong>Documentation:</strong> Playbooks you've written, knowledge transfer</li>
+                        <li><strong>Problem Solving:</strong> Complex issues resolved, innovative solutions</li>
+                        <li><strong>Leadership:</strong> Projects led, team collaboration, mentoring</li>
+                    </ul>
+                </div>
+                
+                <h3>Questions to Ask Interviewer</h3>
+                <div class="collapsible">
+                    <div class="collapsible-header">Show Your Interest</div>
+                    <div class="collapsible-content">
+                        <ul>
+                            <li>What are the biggest infrastructure challenges the team faces?</li>
+                            <li>How does the team approach cost optimization?</li>
+                            <li>What does the CI/CD pipeline look like currently?</li>
+                            <li>How is infrastructure documented and knowledge shared?</li>
+                            <li>What opportunities are there for automation improvements?</li>
+                            <li>How does DevOps collaborate with product and engineering teams?</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <footer style="background: #2c3e50; color: white; padding: 2rem; text-align: center;">
+            <p>Good luck with your interview! Remember: Be specific, use examples, and show your problem-solving approach.</p>
+        </footer>
+    </div>
+    
+    <script>
+        // Collapsible sections functionality
+        document.querySelectorAll('.collapsible').forEach(collapsible => {
+            const header = collapsible.querySelector('.collapsible-header');
+            header.addEventListener('click', () => {
+                collapsible.classList.toggle('active');
+            });
+        });
+        
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const targetSection = document.getElementById(targetId);
+                if (targetSection) {
+                    targetSection.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
