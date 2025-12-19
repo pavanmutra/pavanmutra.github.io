@@ -1,0 +1,22 @@
+<nav class="site-toc">
+  <h2>Site index</h2>
+  <ul>
+    {%- assign all_pages = site.pages | where_exp: "p", "p.title" -%}
+    {%- assign sorted = all_pages | sort: "order" -%}
+    {%- for p in sorted -%}
+      {%- if p.title and p.title != site.title and p.published != false -%}
+        <li><a href="{{ p.url | relative_url }}">{{ p.title }}</a></li>
+      {%- endif -%}
+    {%- endfor -%}
+
+    {%- if site.posts and site.posts != empty -%}
+      <li><strong>Posts</strong>
+        <ul>
+          {%- for post in site.posts limit:10 -%}
+            <li><a href="{{ post.url | relative_url }}">{{ post.title }}</a></li>
+          {%- endfor -%}
+        </ul>
+      </li>
+    {%- endif -%}
+  </ul>
+</nav>
